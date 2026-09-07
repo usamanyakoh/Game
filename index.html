@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color กิมกรรมไอทีเบื้องต้น - เกมทดสอบสายตา</title>
+    <title>Color Vision Challenge - เกมทดสอบสายตา</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -62,15 +62,11 @@
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
 
     <!-- Header -->
-    <header class="text-center mb-6 w-full max-w-Xl">
-        <h1 class="text-xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
-            กิจกรรมไอทีเบื้องต้น
-        </h1>
-        <header class="text-center mb-6 w-full max-w-2xl">
-        <h4 class="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
+    <header class="text-center mb-6 w-full max-w-2xl">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">
             COLOR VISION CHALLENGE
-        </h4>
-        <p class="text-lg md:text-3xl text-blue-200">แบบทดสอบสายตา: แยกแยะความผิดปกติของเม็ดสี</p>
+        </h1>
+        <p class="text-lg md:text-xl text-blue-200">แบบทดสอบสายตา: แยกแยะความผิดปกติของเม็ดสี</p>
     </header>
 
     <!-- Main Container -->
@@ -84,7 +80,7 @@
                 </div>
             </div>
             <p class="text-gray-300 mb-6 max-w-md mx-auto text-sm md:text-base">
-                ระบบจะสุ่มเฉดสีที่ใกล้เคียงกันมาก 10 ข้อ (คละระดับ ง่าย-กลาง-ยาก) เพื่อทดสอบการทำงานของเซลล์รูปกรวยในจอประสาทตาของคุณ
+                ระบบจะสุ่มเฉดสีที่ใกล้เคียงกัน 10 ข้อ (คละระดับ ง่าย-กลาง-ยาก) เพื่อทดสอบการทำงานของเซลล์รูปกรวยในจอประสาทตาของคุณ
             </p>
             
             <div class="mb-6">
@@ -111,7 +107,6 @@
             <!-- Target Color Display -->
             <div class="text-center mb-8">
                 <p class="text-gray-400 mb-3 text-sm tracking-widest uppercase" id="color-name">TARGET SHADE</p>
-                <!-- ปรับกรอบเป้าหมายให้เป็นสีเดียวกับตัวเลือก (border-slate-700) -->
                 <div id="target-color" class="w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full border-4 border-slate-700 shadow-2xl transition-all duration-300"></div>
             </div>
 
@@ -122,7 +117,7 @@
             </div>
         </div>
 
-        <!-- Feedback Pop-up Overlay (Hidden by default) -->
+        <!-- Feedback Pop-up Overlay -->
         <div id="feedback-popup" class="hidden absolute inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm rounded-3xl">
             <div id="feedback-content" class="bg-slate-800 border-2 rounded-2xl p-6 text-center shadow-2xl w-3/4 max-w-xs transform transition-all">
                 <div id="feedback-icon" class="text-5xl mb-3">🎉</div>
@@ -167,63 +162,63 @@
     </div>
 
     <script>
-        // 50 Colors Database (ปรับปรุงเฉดสีให้สมจริงและแยกออกได้ด้วยตาเปล่า)
+        // ปรับแต่งสีใหม่ให้ดูง่ายขึ้นมาก แตกต่างชัดเจน ไม่ปวดตา
         const gameData = [
-            // --- EASY (15 ข้อ): สีห่างกันมาก แตกต่างชัดเจน ---
-            { name: "แดง (Red)", target: "#E53935", options: ["#E53935", "#F44336", "#D32F2F", "#EF5350"], level: "Easy" },
-            { name: "น้ำเงิน (Blue)", target: "#1E88E5", options: ["#1E88E5", "#2196F3", "#1976D2", "#42A5F5"], level: "Easy" },
-            { name: "เขียว (Green)", target: "#43A047", options: ["#43A047", "#4CAF50", "#388E3C", "#66BB6A"], level: "Easy" },
-            { name: "เหลือง (Yellow)", target: "#FDD835", options: ["#FDD835", "#FFEB3B", "#FBC02D", "#FFEE58"], level: "Easy" },
-            { name: "ม่วง (Purple)", target: "#8E24AA", options: ["#8E24AA", "#9C27B0", "#7B1FA2", "#AB47BC"], level: "Easy" },
-            { name: "ส้ม (Orange)", target: "#FB8C00", options: ["#FB8C00", "#FF9800", "#F57C00", "#FFA726"], level: "Easy" },
-            { name: "ชมพู (Pink)", target: "#D81B60", options: ["#D81B60", "#E91E63", "#C2185B", "#EC407A"], level: "Easy" },
-            { name: "น้ำตาล (Brown)", target: "#6D4C41", options: ["#6D4C41", "#795548", "#5D4037", "#8D6E63"], level: "Easy" },
-            { name: "ฟ้า (Sky Blue)", target: "#039BE5", options: ["#039BE5", "#03A9F4", "#0288D1", "#29B6F6"], level: "Easy" },
-            { name: "เทา (Grey)", target: "#757575", options: ["#757575", "#9E9E9E", "#616161", "#BDBDBD"], level: "Easy" },
-            { name: "คราม (Indigo)", target: "#3949AB", options: ["#3949AB", "#3F51B5", "#303F9F", "#5C6BC0"], level: "Easy" },
-            { name: "เขียวมะนาว (Lime)", target: "#C0CA33", options: ["#C0CA33", "#CDDC39", "#AFB42B", "#D4E157"], level: "Easy" },
-            { name: "เขียวอมฟ้า (Teal)", target: "#00897B", options: ["#00897B", "#009688", "#00796B", "#26A69A"], level: "Easy" },
-            { name: "ส้มปะการัง (Coral)", target: "#FF7043", options: ["#FF7043", "#FF5722", "#F4511E", "#FF8A65"], level: "Easy" },
-            { name: "แดงทับทิม (Ruby)", target: "#E91E63", options: ["#E91E63", "#F06292", "#C2185B", "#D81B60"], level: "Easy" },
+            // --- EASY (15 ข้อ): สีห่างกันมากแบบสุดโต่ง แตกต่างชัดเจน ---
+            { name: "แดง (Red)", target: "#E53935", options: ["#E53935", "#FF8A80", "#B71C1C", "#FF5252"], level: "Easy" },
+            { name: "น้ำเงิน (Blue)", target: "#1E88E5", options: ["#1E88E5", "#82B1FF", "#0D47A1", "#448AFF"], level: "Easy" },
+            { name: "เขียว (Green)", target: "#43A047", options: ["#43A047", "#B9F6CA", "#1B5E20", "#69F0AE"], level: "Easy" },
+            { name: "เหลือง (Yellow)", target: "#FDD835", options: ["#FDD835", "#FFF59D", "#F57F17", "#FFF176"], level: "Easy" },
+            { name: "ม่วง (Purple)", target: "#8E24AA", options: ["#8E24AA", "#EA80FC", "#4A148C", "#E040FB"], level: "Easy" },
+            { name: "ส้ม (Orange)", target: "#FB8C00", options: ["#FB8C00", "#FFD180", "#E65100", "#FFAB40"], level: "Easy" },
+            { name: "ชมพู (Pink)", target: "#D81B60", options: ["#D81B60", "#FF80AB", "#880E4F", "#FF4081"], level: "Easy" },
+            { name: "น้ำตาล (Brown)", target: "#6D4C41", options: ["#6D4C41", "#BCAAA4", "#3E2723", "#8D6E63"], level: "Easy" },
+            { name: "ฟ้า (Sky Blue)", target: "#039BE5", options: ["#039BE5", "#81D4FA", "#01579B", "#4FC3F7"], level: "Easy" },
+            { name: "เทา (Grey)", target: "#757575", options: ["#757575", "#EEEEEE", "#212121", "#BDBDBD"], level: "Easy" },
+            { name: "คราม (Indigo)", target: "#3949AB", options: ["#3949AB", "#8C9EFF", "#1A237E", "#536DFE"], level: "Easy" },
+            { name: "เขียวมะนาว (Lime)", target: "#C0CA33", options: ["#C0CA33", "#F4FF81", "#827717", "#EEFF41"], level: "Easy" },
+            { name: "เขียวอมฟ้า (Teal)", target: "#00897B", options: ["#00897B", "#A7FFEB", "#004D40", "#64FFDA"], level: "Easy" },
+            { name: "ส้มปะการัง (Coral)", target: "#FF7043", options: ["#FF7043", "#FFCCBC", "#BF360C", "#FF8A65"], level: "Easy" },
+            { name: "แดงทับทิม (Ruby)", target: "#E91E63", options: ["#E91E63", "#F8BBD0", "#880E4F", "#F06292"], level: "Easy" },
 
-            // --- MEDIUM (20 ข้อ): สีห่างกันปานกลาง (ต้องสังเกต แต่ยังมองออก) ---
-            { name: "เขียวทะเล (Sea Green)", target: "#2E8B57", options: ["#2E8B57", "#389E66", "#247848", "#42B075"], level: "Medium" },
-            { name: "กรมท่า (Navy)", target: "#1A237E", options: ["#1A237E", "#253199", "#12185C", "#3240B8"], level: "Medium" },
-            { name: "เลือดหมู (Maroon)", target: "#800000", options: ["#800000", "#990000", "#660000", "#B30000"], level: "Medium" },
-            { name: "เทอร์ควอยซ์ (Turquoise)", target: "#00BCD4", options: ["#00BCD4", "#1AC6DE", "#009FAD", "#33D0E6"], level: "Medium" },
-            { name: "บานเย็น (Magenta)", target: "#E040FB", options: ["#E040FB", "#EA68FF", "#D018F0", "#F18FFF"], level: "Medium" },
-            { name: "กากี (Khaki)", target: "#D4E157", options: ["#D4E157", "#DEEB6C", "#C5D23F", "#E8F485"], level: "Medium" },
-            { name: "พลัม (Plum)", target: "#BA68C8", options: ["#BA68C8", "#C77FDE", "#A951B5", "#D395EB"], level: "Medium" },
-            { name: "เขียวขี้ม้า (Olive)", target: "#827717", options: ["#827717", "#9C9022", "#665C0C", "#B3A832"], level: "Medium" },
-            { name: "ทอง (Gold)", target: "#FFCA28", options: ["#FFCA28", "#FFD54F", "#FFB300", "#FFE082"], level: "Medium" },
-            { name: "เงิน (Silver)", target: "#B0BEC5", options: ["#B0BEC5", "#90A4AE", "#CFD8DC", "#78909C"], level: "Medium" },
-            { name: "พีช (Peach)", target: "#FFCCBC", options: ["#FFCCBC", "#FFAB91", "#FBE9E7", "#FF8A65"], level: "Medium" },
-            { name: "แซลมอน (Salmon)", target: "#FF8A65", options: ["#FF8A65", "#FF7043", "#FFAB91", "#F4511E"], level: "Medium" },
-            { name: "หินชนวน (Slate)", target: "#607D8B", options: ["#607D8B", "#78909C", "#546E7A", "#90A4AE"], level: "Medium" },
-            { name: "ฟ้าหม่น (Steel Blue)", target: "#4682B4", options: ["#4682B4", "#5C93C2", "#356994", "#6FA5D4"], level: "Medium" },
-            { name: "ช็อกโกแลต (Chocolate)", target: "#5D4037", options: ["#5D4037", "#725146", "#4A312A", "#856155"], level: "Medium" },
-            { name: "เขียวมิ้นต์ (Mint)", target: "#A5D6A7", options: ["#A5D6A7", "#81C784", "#C8E6C9", "#66BB6A"], level: "Medium" },
-            { name: "เหลืองมัสตาร์ด (Mustard)", target: "#F9A825", options: ["#F9A825", "#FBC02D", "#F57F17", "#FDD835"], level: "Medium" },
-            { name: "แดงเบอร์กันดี (Burgundy)", target: "#880E4F", options: ["#880E4F", "#AD1457", "#4A148C", "#C2185B"], level: "Medium" },
-            { name: "ฟ้าน้ำทะเล (Cyan)", target: "#00E5FF", options: ["#00E5FF", "#00B8D4", "#18FFFF", "#84FFFF"], level: "Medium" },
-            { name: "เขียวหยก (Jade)", target: "#00C853", options: ["#00C853", "#00E676", "#00A300", "#69F0AE"], level: "Medium" },
+            // --- MEDIUM (20 ข้อ): สีห่างกันปานกลาง (มองปราดเดียวก็แยกออก) ---
+            { name: "เขียวทะเล (Sea Green)", target: "#2E8B57", options: ["#2E8B57", "#66C28A", "#14522E", "#8FE3AF"], level: "Medium" },
+            { name: "กรมท่า (Navy)", target: "#1A237E", options: ["#1A237E", "#3F49A6", "#08104D", "#5C66C2"], level: "Medium" },
+            { name: "เลือดหมู (Maroon)", target: "#800000", options: ["#800000", "#B33939", "#400000", "#D95B5B"], level: "Medium" },
+            { name: "เทอร์ควอยซ์ (Turquoise)", target: "#00BCD4", options: ["#00BCD4", "#4DD0E1", "#00838F", "#80DEEA"], level: "Medium" },
+            { name: "บานเย็น (Magenta)", target: "#E040FB", options: ["#E040FB", "#EE94FF", "#AA00D6", "#F6B8FF"], level: "Medium" },
+            { name: "กากี (Khaki)", target: "#D4E157", options: ["#D4E157", "#E6EE9C", "#9E9D24", "#F0F4C3"], level: "Medium" },
+            { name: "พลัม (Plum)", target: "#BA68C8", options: ["#BA68C8", "#CE93D8", "#8E24AA", "#E1BEE7"], level: "Medium" },
+            { name: "เขียวขี้ม้า (Olive)", target: "#827717", options: ["#827717", "#B0A835", "#4A4506", "#D4E157"], level: "Medium" },
+            { name: "ทอง (Gold)", target: "#FFCA28", options: ["#FFCA28", "#FFE082", "#FF8F00", "#FFECB3"], level: "Medium" },
+            { name: "เงิน (Silver)", target: "#B0BEC5", options: ["#B0BEC5", "#CFD8DC", "#78909C", "#ECEFF1"], level: "Medium" },
+            { name: "พีช (Peach)", target: "#FFCCBC", options: ["#FFCCBC", "#FFAB91", "#F4511E", "#FBE9E7"], level: "Medium" },
+            { name: "แซลมอน (Salmon)", target: "#FF8A65", options: ["#FF8A65", "#FF7043", "#D84315", "#FFAB91"], level: "Medium" },
+            { name: "หินชนวน (Slate)", target: "#607D8B", options: ["#607D8B", "#90A4AE", "#37474F", "#B0BEC5"], level: "Medium" },
+            { name: "ฟ้าหม่น (Steel Blue)", target: "#4682B4", options: ["#4682B4", "#7BA6C7", "#285478", "#A1C3DE"], level: "Medium" },
+            { name: "ช็อกโกแลต (Chocolate)", target: "#5D4037", options: ["#5D4037", "#8D6E63", "#3E2723", "#A1887F"], level: "Medium" },
+            { name: "เขียวมิ้นต์ (Mint)", target: "#A5D6A7", options: ["#A5D6A7", "#C8E6C9", "#66BB6A", "#E8F5E9"], level: "Medium" },
+            { name: "เหลืองมัสตาร์ด (Mustard)", target: "#F9A825", options: ["#F9A825", "#FBC02D", "#F57F17", "#FFF59D"], level: "Medium" },
+            { name: "แดงเบอร์กันดี (Burgundy)", target: "#880E4F", options: ["#880E4F", "#C2185B", "#4A0024", "#F06292"], level: "Medium" },
+            { name: "ฟ้าน้ำทะเล (Cyan)", target: "#00E5FF", options: ["#00E5FF", "#84FFFF", "#00B8D4", "#B2EBF2"], level: "Medium" },
+            { name: "เขียวหยก (Jade)", target: "#00C853", options: ["#00C853", "#69F0AE", "#00A300", "#B9F6CA"], level: "Medium" },
 
-            // --- HARD (15 ข้อ): สีห่างกันเล็กน้อย (ต้องเพ่งสายตาอย่างจริงจัง แต่ไม่ยากจนเกินไป) ---
-            { name: "แดงสด (Crimson)", target: "#DC143C", options: ["#DC143C", "#ED1B44", "#C80F33", "#F0244D"], level: "Hard" },
-            { name: "น้ำเงินเข้ม (Dark Blue)", target: "#00008B", options: ["#00008B", "#0000A3", "#000073", "#0000BA"], level: "Hard" },
-            { name: "เขียวป่า (Forest Green)", target: "#228B22", options: ["#228B22", "#2A9E2A", "#1C781C", "#30B030"], level: "Hard" },
-            { name: "เหลืองเลมอน (Lemon)", target: "#FFFACD", options: ["#FFFACD", "#FFF2A3", "#FFFFF2", "#FFEAA6"], level: "Hard" },
-            { name: "ม่วงออร์คิด (Orchid)", target: "#DA70D6", options: ["#DA70D6", "#E685E2", "#CD5CCC", "#F29DF0"], level: "Hard" },
-            { name: "ส้มอิฐ (Brick)", target: "#B22222", options: ["#B22222", "#C72E2E", "#9C1717", "#DB3D3D"], level: "Hard" },
-            { name: "ชมพูบานเย็น (Deep Pink)", target: "#FF1493", options: ["#FF1493", "#FF2EA3", "#F00080", "#FF45AE"], level: "Hard" },
-            { name: "น้ำตาลทอง (Golden Brown)", target: "#996515", options: ["#996515", "#AB7624", "#875305", "#BD8732"], level: "Hard" },
-            { name: "ฟ้าพาสเทล (Pastel Blue)", target: "#AEC6CF", options: ["#AEC6CF", "#9DB8C4", "#C0D6E0", "#8FAAB8"], level: "Hard" },
-            { name: "เทาเข้ม (Dark Slate)", target: "#2F4F4F", options: ["#2F4F4F", "#3B5C5C", "#223B3B", "#466969"], level: "Hard" },
-            { name: "ม่วงเข้ม (Deep Purple)", target: "#4A148C", options: ["#4A148C", "#581CA3", "#3C0D75", "#6B23BD"], level: "Hard" },
-            { name: "เขียวแอปเปิ้ล (Apple Green)", target: "#8DB600", options: ["#8DB600", "#9DC700", "#7AA100", "#ADD600"], level: "Hard" },
-            { name: "ฟ้าโคบอลต์ (Cobalt)", target: "#0047AB", options: ["#0047AB", "#0057C7", "#00398C", "#0067E6"], level: "Hard" },
-            { name: "ส้มแมนดาริน (Mandarin)", target: "#F28500", options: ["#F28500", "#FF9512", "#E07700", "#FFAC3B"], level: "Hard" },
-            { name: "ชมพูกุหลาบ (Rose)", target: "#FF007F", options: ["#FF007F", "#FF1C8C", "#E30071", "#FF369D"], level: "Hard" }
+            // --- HARD (15 ข้อ): สีต่างกันตามเฉด UI มาตรฐาน (สว่างกว่า/มืดกว่าสเต็ปนึง มองออกได้โดยไม่ต้องเพ่งมาก) ---
+            { name: "แดงสด (Crimson)", target: "#DC143C", options: ["#DC143C", "#EF4444", "#B91C1C", "#F87171"], level: "Hard" },
+            { name: "น้ำเงินเข้ม (Dark Blue)", target: "#1D4ED8", options: ["#1D4ED8", "#2563EB", "#1E40AF", "#3B82F6"], level: "Hard" },
+            { name: "เขียวป่า (Forest Green)", target: "#15803D", options: ["#15803D", "#16A34A", "#166534", "#22C55E"], level: "Hard" },
+            { name: "เหลืองเลมอน (Lemon)", target: "#EAB308", options: ["#EAB308", "#FACC15", "#CA8A04", "#FDE047"], level: "Hard" },
+            { name: "ม่วงออร์คิด (Orchid)", target: "#9333EA", options: ["#9333EA", "#A855F7", "#7E22CE", "#C084FC"], level: "Hard" },
+            { name: "ส้มอิฐ (Brick)", target: "#C2410C", options: ["#C2410C", "#EA580C", "#9A3412", "#F97316"], level: "Hard" },
+            { name: "ชมพูบานเย็น (Deep Pink)", target: "#DB2777", options: ["#DB2777", "#EC4899", "#BE185D", "#F472B6"], level: "Hard" },
+            { name: "น้ำตาลทอง (Golden Brown)", target: "#A16207", options: ["#A16207", "#CA8A04", "#854D0E", "#EAB308"], level: "Hard" },
+            { name: "ฟ้าพาสเทล (Pastel Blue)", target: "#60A5FA", options: ["#60A5FA", "#3B82F6", "#93C5FD", "#2563EB"], level: "Hard" },
+            { name: "เทาเข้ม (Dark Slate)", target: "#334155", options: ["#334155", "#475569", "#1E293B", "#64748B"], level: "Hard" },
+            { name: "ม่วงเข้ม (Deep Purple)", target: "#581C87", options: ["#581C87", "#6B21A8", "#4C1D95", "#7E22CE"], level: "Hard" },
+            { name: "เขียวแอปเปิ้ล (Apple Green)", target: "#65A30D", options: ["#65A30D", "#84CC16", "#4D7C0F", "#A3E635"], level: "Hard" },
+            { name: "ฟ้าโคบอลต์ (Cobalt)", target: "#0369A1", options: ["#0369A1", "#0284C7", "#075985", "#0EA5E9"], level: "Hard" },
+            { name: "ส้มแมนดาริน (Mandarin)", target: "#EA580C", options: ["#EA580C", "#F97316", "#C2410C", "#FB923C"], level: "Hard" },
+            { name: "ชมพูกุหลาบ (Rose)", target: "#E11D48", options: ["#E11D48", "#F43F5E", "#BE123C", "#FB7185"], level: "Hard" }
         ];
 
         let currentLevel = 0;
@@ -241,7 +236,6 @@
         const levelDisplay = document.getElementById('level-display');
         const difficultyDisplay = document.getElementById('difficulty-display');
         
-        // Popup elements
         const feedbackPopup = document.getElementById('feedback-popup');
         const feedbackContent = document.getElementById('feedback-content');
         const feedbackIcon = document.getElementById('feedback-icon');
@@ -271,7 +265,6 @@
             score = 0;
             isWaitingForNext = false;
             
-            // สุ่มโจทย์คละความยาก (ง่าย 3, กลาง 4, ยาก 3 = 10 ข้อ)
             const easyQs = shuffleArray(gameData.filter(q => q.level === 'Easy')).slice(0, 3);
             const medQs = shuffleArray(gameData.filter(q => q.level === 'Medium')).slice(0, 4);
             const hardQs = shuffleArray(gameData.filter(q => q.level === 'Hard')).slice(0, 3);
@@ -294,7 +287,6 @@
             colorNameDisplay.innerText = currentData.name;
             targetColorDisplay.style.backgroundColor = currentData.target;
             
-            // Set Difficulty Label Colors
             if(currentData.level === 'Easy') {
                 difficultyDisplay.innerText = "ง่าย";
                 difficultyDisplay.parentElement.className = "text-green-400 font-semibold bg-green-900/40 px-4 py-1 rounded-full text-sm";
@@ -341,7 +333,7 @@
                 feedbackIcon.innerText = "🧐";
                 feedbackTitle.innerText = "สังเกตดีๆ นะ เอาใหม่!";
                 feedbackTitle.className = "text-2xl font-bold mb-2 text-red-400";
-                feedbackMessage.innerText = "เฉดสีมันใกล้เคียงกันมาก ลองตั้งใจเพ่งในข้อถัดไปครับ";
+                feedbackMessage.innerText = "พยายามเข้าครับ ลองตั้งใจเพ่งในข้อถัดไป";
                 feedbackContent.classList.add('border-red-500', 'animate-shake');
             }
 
@@ -368,7 +360,6 @@
             document.getElementById('final-score').innerText = score;
             document.getElementById('display-player-name').innerText = playerName;
 
-            // Medical Evaluation Logic based on Score Tiers
             const medTitle = document.getElementById('med-title');
             const medDesc = document.getElementById('med-desc');
             
