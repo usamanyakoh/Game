@@ -163,9 +163,9 @@
     </div>
 
     <script>
-        // 50 Colors Database
+        // 50 Colors Database (ปรับปรุงเฉดสีให้สมจริงและแยกออกได้ด้วยตาเปล่า)
         const gameData = [
-            // --- EASY (15 ข้อ) ---
+            // --- EASY (15 ข้อ): สีห่างกันมาก แตกต่างชัดเจน ---
             { name: "แดง (Red)", target: "#E53935", options: ["#E53935", "#F44336", "#D32F2F", "#EF5350"], level: "Easy" },
             { name: "น้ำเงิน (Blue)", target: "#1E88E5", options: ["#1E88E5", "#2196F3", "#1976D2", "#42A5F5"], level: "Easy" },
             { name: "เขียว (Green)", target: "#43A047", options: ["#43A047", "#4CAF50", "#388E3C", "#66BB6A"], level: "Easy" },
@@ -182,44 +182,44 @@
             { name: "ส้มปะการัง (Coral)", target: "#FF7043", options: ["#FF7043", "#FF5722", "#F4511E", "#FF8A65"], level: "Easy" },
             { name: "แดงทับทิม (Ruby)", target: "#E91E63", options: ["#E91E63", "#F06292", "#C2185B", "#D81B60"], level: "Easy" },
 
-            // --- MEDIUM (20 ข้อ) --- 
-            { name: "เขียวทะเล (Sea Green)", target: "#2E8B57", options: ["#2E8B57", "#2D8A56", "#308D59", "#2C8955"], level: "Medium" },
-            { name: "กรมท่า (Navy)", target: "#1A237E", options: ["#1A237E", "#19227D", "#1C2580", "#18217C"], level: "Medium" },
-            { name: "เลือดหมู (Maroon)", target: "#800000", options: ["#800000", "#820000", "#7E0000", "#840000"], level: "Medium" },
-            { name: "เทอร์ควอยซ์ (Turquoise)", target: "#00BCD4", options: ["#00BCD4", "#00BBD3", "#01BDD5", "#00BAD2"], level: "Medium" },
-            { name: "บานเย็น (Magenta)", target: "#E040FB", options: ["#E040FB", "#E141FC", "#DF3FFA", "#E242FD"], level: "Medium" },
-            { name: "กากี (Khaki)", target: "#D4E157", options: ["#D4E157", "#D5E258", "#D3E056", "#D6E359"], level: "Medium" },
-            { name: "พลัม (Plum)", target: "#BA68C8", options: ["#BA68C8", "#BB69C9", "#B967C7", "#BC6ACA"], level: "Medium" },
-            { name: "เขียวขี้ม้า (Olive)", target: "#827717", options: ["#827717", "#837818", "#817616", "#847919"], level: "Medium" },
-            { name: "ทอง (Gold)", target: "#FFCA28", options: ["#FFCA28", "#FFCB29", "#FFC927", "#FFCC2A"], level: "Medium" },
-            { name: "เงิน (Silver)", target: "#B0BEC5", options: ["#B0BEC5", "#B1BFC6", "#AFBDC4", "#B2C0C7"], level: "Medium" },
-            { name: "พีช (Peach)", target: "#FFCCBC", options: ["#FFCCBC", "#FFCDBD", "#FFCBBB", "#FFCEBE"], level: "Medium" },
-            { name: "แซลมอน (Salmon)", target: "#FF8A65", options: ["#FF8A65", "#FF8B66", "#FF8964", "#FF8C67"], level: "Medium" },
-            { name: "หินชนวน (Slate)", target: "#607D8B", options: ["#607D8B", "#617E8C", "#5F7C8A", "#627F8D"], level: "Medium" },
-            { name: "ฟ้าหม่น (Steel Blue)", target: "#4682B4", options: ["#4682B4", "#4783B5", "#4581B3", "#4884B6"], level: "Medium" },
-            { name: "ช็อกโกแลต (Chocolate)", target: "#5D4037", options: ["#5D4037", "#5E4138", "#5C3F36", "#5F4239"], level: "Medium" },
-            { name: "เขียวมิ้นต์ (Mint)", target: "#A5D6A7", options: ["#A5D6A7", "#A6D7A8", "#A4D5A6", "#A7D8A9"], level: "Medium" },
-            { name: "เหลืองมัสตาร์ด (Mustard)", target: "#F9A825", options: ["#F9A825", "#FAA926", "#F8A724", "#FBAA27"], level: "Medium" },
-            { name: "แดงเบอร์กันดี (Burgundy)", target: "#880E4F", options: ["#880E4F", "#890F50", "#870D4E", "#8A1051"], level: "Medium" },
-            { name: "ฟ้าน้ำทะเล (Cyan)", target: "#00E5FF", options: ["#00E5FF", "#00E6FF", "#00E4FE", "#01E7FF"], level: "Medium" },
-            { name: "เขียวหยก (Jade)", target: "#00C853", options: ["#00C853", "#00C954", "#00C752", "#00CA55"], level: "Medium" },
+            // --- MEDIUM (20 ข้อ): สีห่างกันปานกลาง (ต้องสังเกต แต่ยังมองออก) ---
+            { name: "เขียวทะเล (Sea Green)", target: "#2E8B57", options: ["#2E8B57", "#389E66", "#247848", "#42B075"], level: "Medium" },
+            { name: "กรมท่า (Navy)", target: "#1A237E", options: ["#1A237E", "#253199", "#12185C", "#3240B8"], level: "Medium" },
+            { name: "เลือดหมู (Maroon)", target: "#800000", options: ["#800000", "#990000", "#660000", "#B30000"], level: "Medium" },
+            { name: "เทอร์ควอยซ์ (Turquoise)", target: "#00BCD4", options: ["#00BCD4", "#1AC6DE", "#009FAD", "#33D0E6"], level: "Medium" },
+            { name: "บานเย็น (Magenta)", target: "#E040FB", options: ["#E040FB", "#EA68FF", "#D018F0", "#F18FFF"], level: "Medium" },
+            { name: "กากี (Khaki)", target: "#D4E157", options: ["#D4E157", "#DEEB6C", "#C5D23F", "#E8F485"], level: "Medium" },
+            { name: "พลัม (Plum)", target: "#BA68C8", options: ["#BA68C8", "#C77FDE", "#A951B5", "#D395EB"], level: "Medium" },
+            { name: "เขียวขี้ม้า (Olive)", target: "#827717", options: ["#827717", "#9C9022", "#665C0C", "#B3A832"], level: "Medium" },
+            { name: "ทอง (Gold)", target: "#FFCA28", options: ["#FFCA28", "#FFD54F", "#FFB300", "#FFE082"], level: "Medium" },
+            { name: "เงิน (Silver)", target: "#B0BEC5", options: ["#B0BEC5", "#90A4AE", "#CFD8DC", "#78909C"], level: "Medium" },
+            { name: "พีช (Peach)", target: "#FFCCBC", options: ["#FFCCBC", "#FFAB91", "#FBE9E7", "#FF8A65"], level: "Medium" },
+            { name: "แซลมอน (Salmon)", target: "#FF8A65", options: ["#FF8A65", "#FF7043", "#FFAB91", "#F4511E"], level: "Medium" },
+            { name: "หินชนวน (Slate)", target: "#607D8B", options: ["#607D8B", "#78909C", "#546E7A", "#90A4AE"], level: "Medium" },
+            { name: "ฟ้าหม่น (Steel Blue)", target: "#4682B4", options: ["#4682B4", "#5C93C2", "#356994", "#6FA5D4"], level: "Medium" },
+            { name: "ช็อกโกแลต (Chocolate)", target: "#5D4037", options: ["#5D4037", "#725146", "#4A312A", "#856155"], level: "Medium" },
+            { name: "เขียวมิ้นต์ (Mint)", target: "#A5D6A7", options: ["#A5D6A7", "#81C784", "#C8E6C9", "#66BB6A"], level: "Medium" },
+            { name: "เหลืองมัสตาร์ด (Mustard)", target: "#F9A825", options: ["#F9A825", "#FBC02D", "#F57F17", "#FDD835"], level: "Medium" },
+            { name: "แดงเบอร์กันดี (Burgundy)", target: "#880E4F", options: ["#880E4F", "#AD1457", "#4A148C", "#C2185B"], level: "Medium" },
+            { name: "ฟ้าน้ำทะเล (Cyan)", target: "#00E5FF", options: ["#00E5FF", "#00B8D4", "#18FFFF", "#84FFFF"], level: "Medium" },
+            { name: "เขียวหยก (Jade)", target: "#00C853", options: ["#00C853", "#00E676", "#00A300", "#69F0AE"], level: "Medium" },
 
-            // --- HARD (15 ข้อ) ---
-            { name: "แดงสด (Crimson)", target: "#DC143C", options: ["#DC143C", "#DD143C", "#DB143C", "#DE143C"], level: "Hard" },
-            { name: "น้ำเงินเข้ม (Dark Blue)", target: "#00008B", options: ["#00008B", "#00008C", "#00008A", "#00008D"], level: "Hard" },
-            { name: "เขียวป่า (Forest Green)", target: "#228B22", options: ["#228B22", "#228C22", "#228A22", "#228D22"], level: "Hard" },
-            { name: "เหลืองเลมอน (Lemon)", target: "#FFFACD", options: ["#FFFACD", "#FFFBCD", "#FFF9CD", "#FFFCCD"], level: "Hard" },
-            { name: "ม่วงออร์คิด (Orchid)", target: "#DA70D6", options: ["#DA70D6", "#DB70D6", "#D970D6", "#DC70D6"], level: "Hard" },
-            { name: "ส้มอิฐ (Brick)", target: "#B22222", options: ["#B22222", "#B32222", "#B12222", "#B42222"], level: "Hard" },
-            { name: "ชมพูบานเย็น (Deep Pink)", target: "#FF1493", options: ["#FF1493", "#FF1593", "#FF1393", "#FF1693"], level: "Hard" },
-            { name: "น้ำตาลทอง (Golden Brown)", target: "#996515", options: ["#996515", "#9A6515", "#986515", "#9B6515"], level: "Hard" },
-            { name: "ฟ้าพาสเทล (Pastel Blue)", target: "#AEC6CF", options: ["#AEC6CF", "#AFC6CF", "#ADC6CF", "#B0C6CF"], level: "Hard" },
-            { name: "เทาเข้ม (Dark Slate)", target: "#2F4F4F", options: ["#2F4F4F", "#304F4F", "#2E4F4F", "#314F4F"], level: "Hard" },
-            { name: "ม่วงเข้ม (Deep Purple)", target: "#4A148C", options: ["#4A148C", "#4B148C", "#49148C", "#4C148C"], level: "Hard" },
-            { name: "เขียวแอปเปิ้ล (Apple Green)", target: "#8DB600", options: ["#8DB600", "#8EB600", "#8CB600", "#8FB600"], level: "Hard" },
-            { name: "ฟ้าโคบอลต์ (Cobalt)", target: "#0047AB", options: ["#0047AB", "#0048AB", "#0046AB", "#0049AB"], level: "Hard" },
-            { name: "ส้มแมนดาริน (Mandarin)", target: "#F28500", options: ["#F28500", "#F38500", "#F18500", "#F48500"], level: "Hard" },
-            { name: "ชมพูกุหลาบ (Rose)", target: "#FF007F", options: ["#FF007F", "#FF017F", "#FE007F", "#FF027F"], level: "Hard" }
+            // --- HARD (15 ข้อ): สีห่างกันเล็กน้อย (ต้องเพ่งสายตาอย่างจริงจัง แต่ไม่ยากจนเกินไป) ---
+            { name: "แดงสด (Crimson)", target: "#DC143C", options: ["#DC143C", "#ED1B44", "#C80F33", "#F0244D"], level: "Hard" },
+            { name: "น้ำเงินเข้ม (Dark Blue)", target: "#00008B", options: ["#00008B", "#0000A3", "#000073", "#0000BA"], level: "Hard" },
+            { name: "เขียวป่า (Forest Green)", target: "#228B22", options: ["#228B22", "#2A9E2A", "#1C781C", "#30B030"], level: "Hard" },
+            { name: "เหลืองเลมอน (Lemon)", target: "#FFFACD", options: ["#FFFACD", "#FFF2A3", "#FFFFF2", "#FFEAA6"], level: "Hard" },
+            { name: "ม่วงออร์คิด (Orchid)", target: "#DA70D6", options: ["#DA70D6", "#E685E2", "#CD5CCC", "#F29DF0"], level: "Hard" },
+            { name: "ส้มอิฐ (Brick)", target: "#B22222", options: ["#B22222", "#C72E2E", "#9C1717", "#DB3D3D"], level: "Hard" },
+            { name: "ชมพูบานเย็น (Deep Pink)", target: "#FF1493", options: ["#FF1493", "#FF2EA3", "#F00080", "#FF45AE"], level: "Hard" },
+            { name: "น้ำตาลทอง (Golden Brown)", target: "#996515", options: ["#996515", "#AB7624", "#875305", "#BD8732"], level: "Hard" },
+            { name: "ฟ้าพาสเทล (Pastel Blue)", target: "#AEC6CF", options: ["#AEC6CF", "#9DB8C4", "#C0D6E0", "#8FAAB8"], level: "Hard" },
+            { name: "เทาเข้ม (Dark Slate)", target: "#2F4F4F", options: ["#2F4F4F", "#3B5C5C", "#223B3B", "#466969"], level: "Hard" },
+            { name: "ม่วงเข้ม (Deep Purple)", target: "#4A148C", options: ["#4A148C", "#581CA3", "#3C0D75", "#6B23BD"], level: "Hard" },
+            { name: "เขียวแอปเปิ้ล (Apple Green)", target: "#8DB600", options: ["#8DB600", "#9DC700", "#7AA100", "#ADD600"], level: "Hard" },
+            { name: "ฟ้าโคบอลต์ (Cobalt)", target: "#0047AB", options: ["#0047AB", "#0057C7", "#00398C", "#0067E6"], level: "Hard" },
+            { name: "ส้มแมนดาริน (Mandarin)", target: "#F28500", options: ["#F28500", "#FF9512", "#E07700", "#FFAC3B"], level: "Hard" },
+            { name: "ชมพูกุหลาบ (Rose)", target: "#FF007F", options: ["#FF007F", "#FF1C8C", "#E30071", "#FF369D"], level: "Hard" }
         ];
 
         let currentLevel = 0;
@@ -308,7 +308,6 @@
             
             shuffledOptions.forEach((colorCode) => {
                 const btn = document.createElement('button');
-                // แก้ไขกรอบให้เป็นสีเดียวกันทั้งหมด (border-slate-700) และลบ hover effect
                 btn.className = `color-btn aspect-square w-full rounded-2xl shadow-lg border-4 border-slate-700 cursor-pointer`;
                 btn.style.backgroundColor = colorCode;
                 
@@ -325,7 +324,6 @@
             isWaitingForNext = true;
             const isCorrect = selectedCode === targetCode;
             
-            // Style the popup based on result
             feedbackContent.classList.remove('border-green-500', 'border-red-500', 'animate-popup', 'animate-shake');
             
             if (isCorrect) {
@@ -337,7 +335,7 @@
                 feedbackContent.classList.add('border-green-500', 'animate-popup');
             } else {
                 feedbackIcon.innerText = "🧐";
-                feedbackTitle.innerText = "ลองใหม่ครับ!";
+                feedbackTitle.innerText = "สังเกตดีๆ นะ เอาใหม่!";
                 feedbackTitle.className = "text-2xl font-bold mb-2 text-red-400";
                 feedbackMessage.innerText = "เฉดสีมันใกล้เคียงกันมาก ลองตั้งใจเพ่งในข้อถัดไปครับ";
                 feedbackContent.classList.add('border-red-500', 'animate-shake');
@@ -356,7 +354,8 @@
                 }
             }, 1800);
         }
-function showEndScreen() {
+
+        function showEndScreen() {
             gameScreen.classList.add('hidden');
             gameScreen.classList.remove('block');
             endScreen.classList.remove('hidden');
@@ -369,7 +368,6 @@ function showEndScreen() {
             const medTitle = document.getElementById('med-title');
             const medDesc = document.getElementById('med-desc');
             
-            // เพิ่มกล่องสำหรับแสดงทิปส์เพิ่มเติมแบบไดนามิก (ปรับให้เหมาะกับทุกอาชีพ)
             let additionalTips = "";
             
             if (score === 10) {
@@ -386,7 +384,7 @@ function showEndScreen() {
                 additionalTips = `
                     <li>🎯 <strong>กฎ 20-20-20:</strong> เพื่อคลายการหดเกร็งของกล้ามเนื้อตา (Ciliary muscle) ควรพักสายตาทุก 20 นาที มองไกล 20 ฟุต นาน 20 วินาที เมื่อต้องทำงานหน้าจอหรืออ่านหนังสือเป็นเวลานาน</li>`;
             
-            } else if (score >= 6) { // คะแนน 6 - 8
+            } else if (score >= 6) { 
                 medTitle.innerText = "⚠️ ภาวะตาล้าสะสม (Digital Eye Strain / Mild Deficiency)";
                 medTitle.className = "text-lg font-bold mb-2 text-yellow-400";
                 medDesc.innerHTML = "<strong>ผลประเมินทางการแพทย์:</strong> อาจมีความบกพร่องทางสีระดับอ่อน หรือเกิดจากภาวะตาล้าสะสม การจ้องจอมอนิเตอร์หรือสมาร์ทโฟนต่อเนื่องทำให้อัตราการกะพริบตาลดลง ส่งผลให้ชั้นน้ำตา (Tear film) ไม่คงที่และเกิดตาแห้ง";
@@ -394,7 +392,7 @@ function showEndScreen() {
                     <li>💧 <strong>การป้องกันตาแห้ง:</strong> กะพริบตาให้บ่อยขึ้นอย่างตั้งใจ หรือใช้น้ำตาเทียม (แบบไม่มีสารกันเสีย) หยอดระหว่างวันเพื่อเพิ่มความชุ่มชื้น</li>
                     <li>💡 <strong>การปรับแสง:</strong> หลีกเลี่ยงการใช้โทรศัพท์ในที่มืด และปรับแสงสว่างในห้องทำงานให้เพียงพอเพื่อลดภาระการเพ่งของดวงตา</li>`;
             
-            } else if (score >= 3) { // คะแนน 3 - 5
+            } else if (score >= 3) { 
                 medTitle.innerText = "⚠️ ความเสี่ยงตาบอดสีระดับปานกลาง (Moderate Color Deficiency)";
                 medTitle.className = "text-lg font-bold mb-2 text-orange-500";
                 medDesc.innerHTML = "<strong>ผลประเมินทางการแพทย์:</strong> เซลล์รับสีบางชนิดอาจทำงานบกพร่อง (Anomalous Trichromacy) ทำให้แยกสีโทนใกล้เคียงได้ยาก หรืออาจเกิดจากความเครียดสะสมของสายตาจากการเพ่งหน้าจอเกินขีดจำกัด";
@@ -402,7 +400,7 @@ function showEndScreen() {
                     <li>🌳 <strong>ผ่อนคลายกล้ามเนื้อตา:</strong> ควรหาเวลาพักสายตาด้วยการมองพื้นที่สีเขียว ต้นไม้ หรือพื้นที่กว้างๆ เพื่อลดความตึงเครียดของระบบประสาทตา</li>
                     <li>💻 <strong>การตั้งค่าอุปกรณ์:</strong> ปรับจอคอมพิวเตอร์และมือถือให้มีคอนทราสต์ (ความเปรียบต่าง) ที่ชัดเจน หรือเปิดโหมดถนอมสายตา เพื่อลดความล้าในการทำงานแต่ละวัน</li>`;
             
-            } else { // คะแนน 0 - 2
+            } else { 
                 medTitle.innerText = "❌ ความเสี่ยงตาบอดสีสูง (High Risk of Color Vision Deficiency)";
                 medTitle.className = "text-lg font-bold mb-2 text-red-500";
                 medDesc.innerHTML = "<strong>ผลประเมินทางการแพทย์:</strong> มีความเสี่ยงสูงต่อภาวะตาบอดสี (Color Vision Deficiency) แนะนำให้พบจักษุแพทย์เพื่อตรวจการมองเห็นอย่างละเอียดด้วยแผ่นทดสอบ (Ishihara Test) เพื่อรับคำแนะนำที่ถูกต้องและปลอดภัยในการใช้ชีวิตประจำวัน";
@@ -411,12 +409,10 @@ function showEndScreen() {
                     <li>🕶️ <strong>การปกป้อง:</strong> ดวงตาอาจไวต่อแสงจ้า ควรปกป้องดวงตาด้วยแว่นกันแดดที่ได้มาตรฐานเมื่อต้องออกแดดหรือขับรถตอนกลางวัน</li>`;
             }
 
-            // แทรก Tips พิเศษต่อท้าย
             const extraTipsContainer = document.createElement('div');
             extraTipsContainer.className = "mt-4 border-t border-slate-700/50 pt-3";
             extraTipsContainer.innerHTML = `<ul class="text-sm md:text-base text-gray-300 space-y-2 list-none">${additionalTips}</ul>`;
             
-            // เช็กว่ามีแทรกไปแล้วหรือยัง เพื่อไม่ให้มันซ้อนกันตอนกดเล่นซ้ำ
             const existingTips = document.getElementById('dynamic-tips');
             if (existingTips) existingTips.remove();
             
@@ -424,7 +420,6 @@ function showEndScreen() {
             medDesc.parentNode.appendChild(extraTipsContainer);
         }
 
-        
         function resetToHome() {
             endScreen.classList.add('hidden');
             endScreen.classList.remove('block');
