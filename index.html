@@ -345,40 +345,72 @@
         }
 
         // แสดงหน้าสรุปผล
-        function showEndScreen() {
-            // เติมหลอด Progress ให้เต็ม
-            document.getElementById('progress-bar').style.width = `100%`;
-            
+       function showEndScreen() {
             gameScreen.classList.add('hidden');
             gameScreen.classList.remove('block');
-            
             endScreen.classList.remove('hidden');
             endScreen.classList.add('block');
             
             document.getElementById('final-score').innerText = score;
-            document.getElementById('display-player-name').innerText = `ผู้เล่น: ${playerName}`;
+            document.getElementById('display-player-name').innerText = playerName;
 
-            // ประเมินผลตามคะแนน
-            let evalText = "";
-            let evalColor = "";
+            // Medical Evaluation Logic based on Score Tiers
+            const medTitle = document.getElementById('med-title');
+            const medDesc = document.getElementById('med-desc');
+            
+            // เพิ่มกล่องสำหรับแสดงทิปส์เพิ่มเติมแบบไดนามิก
+            let additionalTips = "";
             
             if (score === 10) {
-                evalText = "🏆 สายตาคุณยอดเยี่ยมมาก! แยกแยะเฉดสีได้ไร้ที่ติ 🏆";
-                evalColor = "text-green-300";
-            } else if (score >= 7) {
-                evalText = "✨ สายตาดีมาก! มองเห็นความต่างได้ชัดเจน ✨";
-                evalColor = "text-blue-300";
-            } else if (score >= 4) {
-                evalText = "👍 อยู่ในเกณฑ์ปกติ แต่บางสีอาจจะหลอกตาไปนิด 👍";
-                evalColor = "text-yellow-300";
-            } else {
-                evalText = "👀 ต้องฝึกบ่อยๆ! ลองพยายามเพ่งดูความต่างอีกนิด 👀";
-                evalColor = "text-red-300";
+                medTitle.innerText = "👁️ ระดับสายตา: ดีเยี่ยม (Perfect Normal Trichromacy)";
+                medTitle.className = "text-lg font-bold mb-2 text-green-400";
+                medDesc.innerHTML = "<strong>ผลประเมินทางการแพทย์:</strong> เซลล์รูปกรวย (Cone cells) ทั้ง 3 ชนิดในจอประสาทตาทำงานประสานกันได้อย่างสมบูรณ์แบบ มีความไวต่อคอนทราสต์สีสูงมาก ถือเป็นข้อได้เปรียบที่ยอดเยี่ยมสำหรับการออกแบบ UI ด้วย Tailwind CSS หรือการแยกแยะเฉดสีเพื่อเขียน Prompt สั่งงาน AI งานกราฟิกต่างๆ";
+                additionalTips = `
+                    <li>🥦 <strong>การบำรุง:</strong> นำความรู้ด้านอาหารและโภชนาการมาปรับใช้ โดยเน้นเมนูที่มีวิตามินเอและลูทีน เพื่อรักษาสภาพจอประสาทตา (Retina) ให้แข็งแรงและแม่นยำแบบนี้ต่อไปครับ</li>`;
+            
+            } else if (score === 9) {
+                medTitle.innerText = "👁️ ระดับสายตา: ปกติ (Normal Vision / Mild Visual Fatigue)";
+                medTitle.className = "text-lg font-bold mb-2 text-green-300";
+                medDesc.innerHTML = "<strong>ผลประเมินทางการแพทย์:</strong> การแยกแยะสีอยู่ในเกณฑ์ปกติ แต่อาจมีภาวะสายตาล้า (Asthenopia) ชั่วขณะทำให้พลาดในเฉดสีที่ใกล้เคียงกันสุดๆ มักเกิดจากการใช้สมาธิจดจ่อกับการเขียนสคริปต์หน้าเว็บหรือตั้งค่าระบบ LINE เป็นเวลานาน";
+                additionalTips = `
+                    <li>🎯 <strong>กฎ 20-20-20:</strong> เพื่อคลายการหดเกร็งของกล้ามเนื้อตา (Ciliary muscle) ควรพักสายตาทุก 20 นาที มองไกล 20 ฟุต นาน 20 วินาที เมื่อต้องอยู่หน้าจอมอนิเตอร์นานๆ</li>`;
+            
+            } else if (score >= 6) { // คะแนน 6 - 8
+                medTitle.innerText = "⚠️ ภาวะตาล้าสะสม (Digital Eye Strain / Mild Deficiency)";
+                medTitle.className = "text-lg font-bold mb-2 text-yellow-400";
+                medDesc.innerHTML = "<strong>ผลประเมินทางการแพทย์:</strong> อาจมีความบกพร่องทางสีระดับอ่อน หรือเกิดจากภาวะตาล้าสะสม การจ้องจอมอนิเตอร์เพื่อดูโค้ดหรือเช็กสถิติบนสมาร์ทวอทช์นานๆ ทำให้อัตราการกะพริบตาลดลง ส่งผลให้ชั้นน้ำตา (Tear film) ไม่คงที่และเกิดตาแห้ง";
+                additionalTips = `
+                    <li>💧 <strong>การป้องกันตาแห้ง:</strong> กะพริบตาให้บ่อยขึ้น หรือใช้น้ำตาเทียม (Preservative-free) ระหว่างวัน</li>
+                    <li>🥕 <strong>โภชนาการ:</strong> ทานผักใบเขียวเข้มเพื่อเพิ่ม Lutein ช่วยปกป้องจุดรับภาพชัด (Macula) จากแสงสีฟ้าของหน้าจออุปกรณ์ต่างๆ</li>`;
+            
+            } else if (score >= 3) { // คะแนน 3 - 5
+                medTitle.innerText = "⚠️ ความเสี่ยงตาบอดสีระดับปานกลาง (Moderate Color Deficiency)";
+                medTitle.className = "text-lg font-bold mb-2 text-orange-500";
+                medDesc.innerHTML = "<strong>ผลประเมินทางการแพทย์:</strong> เซลล์รับสีบางชนิดอาจทำงานบกพร่อง (Anomalous Trichromacy) ทำให้แยกสีโทนใกล้เคียงได้ยาก หรืออาจเกิดจากภาวะตาแห้งและตาล้าอย่างหนักจากการใช้สายตาเกินขีดจำกัด";
+                additionalTips = `
+                    <li>🏊 <strong>ผ่อนคลายระบบประสาทตา:</strong> พักสายตาจากหน้าจอคอมพิวเตอร์ ไปทำกิจกรรมอย่างการว่ายน้ำ หรือฝึกกล้ามเนื้อแกนกลางลำตัว เพื่อลดความตึงเครียดของจอประสาทตา</li>
+                    <li>💻 <strong>การทำงาน:</strong> ในการพัฒนาเว็บแอปพลิเคชัน ควรเลือกใช้คอนทราสต์สีที่ตัดกันชัดเจนเพื่อลดภาระการเพ่งของดวงตา</li>`;
+            
+            } else { // คะแนน 0 - 2
+                medTitle.innerText = "❌ ความเสี่ยงตาบอดสีสูง (High Risk of Color Vision Deficiency)";
+                medTitle.className = "text-lg font-bold mb-2 text-red-500";
+                medDesc.innerHTML = "<strong>ผลประเมินทางการแพทย์:</strong> มีความเสี่ยงสูงต่อภาวะตาบอดสี (Color Vision Deficiency) แนะนำให้พบจักษุแพทย์เพื่อตรวจการมองเห็นอย่างละเอียดด้วยแผ่นทดสอบ Ishihara Test เพื่อวินิจฉัยและรับคำแนะนำที่ถูกต้อง";
+                additionalTips = `
+                    <li>🛠️ <strong>ตัวช่วยในการทำงาน:</strong> สำหรับการทำงานเขียนสคริปต์หรือทำระบบต่างๆ ควรใช้เครื่องมือตรวจสอบ Accessibility หรือดูค่า Hex Code เป็นหลักแทนการกะระยะด้วยตาเปล่า</li>
+                    <li>🕶️ <strong>การปกป้อง:</strong> หลีกเลี่ยงการใช้สายตาในที่แสงสว่างไม่เพียงพอ และควรสวมแว่นกันแดดเมื่อต้องออกไปทำกิจกรรมกลางแจ้ง</li>`;
             }
 
-            const evaluationEl = document.getElementById('evaluation-text');
-            evaluationEl.innerText = evalText;
-            evaluationEl.className = `text-lg md:text-xl font-semibold mb-6 drop-shadow-md ${evalColor}`;
+            // แทรก Tips พิเศษต่อท้าย
+            const extraTipsContainer = document.createElement('div');
+            extraTipsContainer.className = "mt-4 border-t border-slate-700/50 pt-3";
+            extraTipsContainer.innerHTML = `<ul class="text-sm md:text-base text-gray-300 space-y-2 list-none">${additionalTips}</ul>`;
+            
+            // เช็กว่ามีแทรกไปแล้วหรือยัง เพื่อไม่ให้มันซ้อนกันตอนกดเล่นซ้ำ
+            const existingTips = document.getElementById('dynamic-tips');
+            if (existingTips) existingTips.remove();
+            
+            extraTipsContainer.id = 'dynamic-tips';
+            medDesc.parentNode.appendChild(extraTipsContainer);
         }
 
         // กลับหน้าแรก
