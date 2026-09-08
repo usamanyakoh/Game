@@ -85,7 +85,7 @@
                 </div>
             </div>
             <p class="text-gray-300 mb-6 max-w-md mx-auto text-xl md:text-2xl leading-relaxed">
-                ระบบจะสุ่มเฉดสี 10 ข้อ (คละความยาก) <br><span class="text-red-400 font-bold">⚠️ คุณมีเวลาตอบเพียงข้อละ 5 วินาทีเท่านั้น!</span>
+                ระบบจะสุ่มเฉดสี 10 ข้อ (คละความยาก) <br><span class="text-red-400 font-bold">⚠️ คุณมีเวลาจำกัดตามระดับความยาก (5 - 10 วินาที)!</span>
             </p>
             
             <div class="mb-6">
@@ -242,8 +242,8 @@
         
         // Timer Setup
         let timerInterval;
-        let timeLeft = 5;
-        const TIME_LIMIT = 5;
+        let timeLeft = 0;
+        let currentTimeLimit = 5;
 
         const startScreen = document.getElementById('start-screen');
         const gameScreen = document.getElementById('game-screen');
@@ -303,9 +303,9 @@
             loadLevel();
         }
 
-        function startTimer() {
+        function startTimer(limit) {
             clearInterval(timerInterval);
-            timeLeft = TIME_LIMIT;
+            timeLeft = limit;
             
             // Reset visuals instantly
             timerText.innerText = timeLeft;
@@ -323,7 +323,7 @@
                 timerText.innerText = timeLeft;
                 
                 // Update width
-                const percentage = (timeLeft / TIME_LIMIT) * 100;
+                const percentage = (timeLeft / limit) * 100;
                 timerBar.style.width = `${percentage}%`;
                 
                 // Change color if time is low
@@ -371,16 +371,19 @@
             colorNameDisplay.innerText = currentData.name;
             targetColorDisplay.style.backgroundColor = currentData.target;
             
-            // Set Difficulty Label Colors
+            // Set Difficulty Label Colors and Time Limit
             if(currentData.level === 'Easy') {
                 difficultyDisplay.innerText = "ง่าย";
                 difficultyDisplay.parentElement.className = "text-green-400 font-bold bg-green-900/40 px-4 py-1 rounded-full text-xl md:text-2xl";
+                currentTimeLimit = 5;
             } else if (currentData.level === 'Medium') {
                 difficultyDisplay.innerText = "ปานกลาง";
                 difficultyDisplay.parentElement.className = "text-yellow-400 font-bold bg-yellow-900/40 px-4 py-1 rounded-full text-xl md:text-2xl";
+                currentTimeLimit = 7;
             } else {
                 difficultyDisplay.innerText = "ยาก";
                 difficultyDisplay.parentElement.className = "text-red-400 font-bold bg-red-900/40 px-4 py-1 rounded-full text-xl md:text-2xl";
+                currentTimeLimit = 10;
             }
             
             optionsContainer.innerHTML = '';
@@ -400,8 +403,8 @@
                 optionsContainer.appendChild(btn);
             });
 
-            // Start the 5 seconds timer
-            startTimer();
+            // Start the timer based on difficulty
+            startTimer(currentTimeLimit);
         }
 
         function checkAnswer(selectedCode, targetCode, btnElement) {
