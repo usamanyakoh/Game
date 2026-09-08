@@ -7,14 +7,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* เปลี่ยนฟอนต์หลักเป็น Angsana New */
+        /* ใช้ฟอนต์หลักเป็น Angsana New ตามที่ขอมา */
         body {
             font-family: 'Angsana New', 'AngsanaUPC', 'TH Sarabun New', serif;
             background-color: #0f172a;
             color: #f8fafc;
             overflow-x: hidden;
-            /* ปรับขนาดฟอนต์พื้นฐานให้ใหญ่ขึ้นเล็กน้อย เพราะ Angsana New ตัวจะเล็กกว่าฟอนต์ทั่วไป */
-            font-size: 1.25rem; 
+            font-size: 1.25rem; /* ปรับพื้นฐานให้ใหญ่ขึ้นสำหรับ Angsana */
         }
         .glass-panel {
             background: rgba(30, 41, 59, 0.7);
@@ -59,6 +58,10 @@
             position: relative;
             overflow: hidden;
         }
+        /* Timer bar transition */
+        #timer-bar {
+            transition: width 1s linear, background-color 0.3s ease;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -82,7 +85,7 @@
                 </div>
             </div>
             <p class="text-gray-300 mb-6 max-w-md mx-auto text-xl md:text-2xl leading-relaxed">
-                ระบบจะสุ่มเฉดสีที่ใกล้เคียงกัน 10 ข้อ (คละระดับ ง่าย-กลาง-ยาก) เพื่อทดสอบการทำงานของเซลล์รูปกรวยในจอประสาทตาของคุณ
+                ระบบจะสุ่มเฉดสี 10 ข้อ (คละความยาก) <br><span class="text-red-400 font-bold">⚠️ คุณมีเวลาตอบเพียงข้อละ 5 วินาทีเท่านั้น!</span>
             </p>
             
             <div class="mb-6">
@@ -97,12 +100,20 @@
 
         <!-- Game Screen -->
         <div id="game-screen" class="hidden fade-in">
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex justify-between items-center mb-4">
                 <div class="text-cyan-400 font-bold bg-cyan-900/40 px-4 py-1 rounded-full text-xl md:text-2xl">
                     ข้อที่ <span id="level-display">1</span> / 10
                 </div>
                 <div class="text-yellow-400 font-bold bg-yellow-900/40 px-4 py-1 rounded-full text-xl md:text-2xl">
                     ระดับ: <span id="difficulty-display">ง่าย</span>
+                </div>
+            </div>
+
+            <!-- Timer Bar -->
+            <div class="w-full bg-slate-800 rounded-full h-7 mb-6 relative overflow-hidden border border-slate-600 shadow-inner">
+                <div id="timer-bar" class="h-full w-full bg-emerald-400" style="width: 100%;"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-2xl font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                    เหลือเวลา <span id="timer-text" class="mx-1">5</span> วินาที
                 </div>
             </div>
 
@@ -164,7 +175,7 @@
     </div>
 
     <script>
-        // 50 Colors Database (ระดับความยากที่เหมาะสม เล่นสนุก)
+        // 50 Colors Database (ความยากสมดุลแล้ว แตกต่างอย่างก้าวกระโดด)
         const gameData = [
             // --- EASY (15 ข้อ): สีห่างกันมาก แตกต่างชัดเจน ---
             { name: "แดง (Red)", target: "#E53935", options: ["#E53935", "#F44336", "#D32F2F", "#EF5350"], level: "Easy" },
@@ -205,7 +216,7 @@
             { name: "ฟ้าน้ำทะเล (Cyan)", target: "#00E5FF", options: ["#00E5FF", "#00B8D4", "#18FFFF", "#84FFFF"], level: "Medium" },
             { name: "เขียวหยก (Jade)", target: "#00C853", options: ["#00C853", "#00E676", "#00A300", "#69F0AE"], level: "Medium" },
 
-            // --- HARD (15 ข้อ): สีห่างกันเล็กน้อย (ท้าทายแต่เป็นไปได้ด้วยตาเปล่า) ---
+            // --- HARD (15 ข้อ): สีห่างกันเล็กน้อย (ต้องเพ่งสายตาอย่างจริงจัง แต่ไม่ยากจนเกินไป) ---
             { name: "แดงสด (Crimson)", target: "#DC143C", options: ["#DC143C", "#ED1B44", "#C80F33", "#F0244D"], level: "Hard" },
             { name: "น้ำเงินเข้ม (Dark Blue)", target: "#00008B", options: ["#00008B", "#0000A3", "#000073", "#0000BA"], level: "Hard" },
             { name: "เขียวป่า (Forest Green)", target: "#228B22", options: ["#228B22", "#2A9E2A", "#1C781C", "#30B030"], level: "Hard" },
@@ -228,6 +239,11 @@
         let isWaitingForNext = false;
         let currentQuestions = [];
         let playerName = "";
+        
+        // Timer Setup
+        let timerInterval;
+        let timeLeft = 5;
+        const TIME_LIMIT = 5;
 
         const startScreen = document.getElementById('start-screen');
         const gameScreen = document.getElementById('game-screen');
@@ -244,6 +260,10 @@
         const feedbackIcon = document.getElementById('feedback-icon');
         const feedbackTitle = document.getElementById('feedback-title');
         const feedbackMessage = document.getElementById('feedback-message');
+        
+        // Timer elements
+        const timerBar = document.getElementById('timer-bar');
+        const timerText = document.getElementById('timer-text');
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -283,6 +303,66 @@
             loadLevel();
         }
 
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = TIME_LIMIT;
+            
+            // Reset visuals instantly
+            timerText.innerText = timeLeft;
+            timerBar.style.transition = 'none';
+            timerBar.style.width = '100%';
+            timerBar.className = "h-full w-full bg-emerald-400"; // Reset to green
+            
+            // Re-enable transition after a tiny delay to ensure reset is processed
+            setTimeout(() => {
+                timerBar.style.transition = 'width 1s linear, background-color 0.3s ease';
+            }, 50);
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerText.innerText = timeLeft;
+                
+                // Update width
+                const percentage = (timeLeft / TIME_LIMIT) * 100;
+                timerBar.style.width = `${percentage}%`;
+                
+                // Change color if time is low
+                if (timeLeft <= 2) {
+                    timerBar.className = "h-full w-full bg-red-500";
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeOut();
+                }
+            }, 1000);
+        }
+
+        function handleTimeOut() {
+            isWaitingForNext = true;
+            
+            feedbackContent.classList.remove('border-green-500', 'border-red-500', 'border-yellow-500', 'animate-popup', 'animate-shake');
+            
+            feedbackIcon.innerText = "⏳";
+            feedbackTitle.innerText = "หมดเวลา!";
+            feedbackTitle.className = "text-4xl font-bold mb-2 text-yellow-400";
+            feedbackMessage.innerText = "คุณตอบไม่ทันเวลาในข้อนี้ ลองเพ่งให้ไวขึ้นในข้อถัดไปครับ";
+            feedbackContent.classList.add('border-yellow-500', 'animate-shake');
+            
+            feedbackPopup.classList.remove('hidden');
+
+            setTimeout(() => {
+                feedbackPopup.classList.add('hidden');
+                currentLevel++;
+                
+                if (currentLevel < 10) {
+                    loadLevel();
+                } else {
+                    showEndScreen();
+                }
+            }, 1800);
+        }
+
         function loadLevel() {
             isWaitingForNext = false;
             const currentData = currentQuestions[currentLevel];
@@ -319,13 +399,19 @@
                 
                 optionsContainer.appendChild(btn);
             });
+
+            // Start the 5 seconds timer
+            startTimer();
         }
 
         function checkAnswer(selectedCode, targetCode, btnElement) {
+            // หยุดเวลาทันทีที่กดเลือกคำตอบ
+            clearInterval(timerInterval); 
+            
             isWaitingForNext = true;
             const isCorrect = selectedCode === targetCode;
             
-            feedbackContent.classList.remove('border-green-500', 'border-red-500', 'animate-popup', 'animate-shake');
+            feedbackContent.classList.remove('border-green-500', 'border-red-500', 'border-yellow-500', 'animate-popup', 'animate-shake');
             
             if (isCorrect) {
                 score++;
@@ -378,14 +464,14 @@
                 additionalTips = `
                     <li>🥦 <strong>การบำรุง:</strong> ทานอาหารที่มีวิตามินเอและลูทีน (เช่น แครอท ฟักทอง ผักใบเขียว) เป็นประจำ เพื่อรักษาสภาพจอประสาทตา (Retina) ให้แข็งแรงและแม่นยำแบบนี้ต่อไปครับ</li>`;
             
-            } else if (score === 9) {
+            } else if (score >= 8) {
                 medTitle.innerText = "👁️ ระดับสายตา: ปกติ (Normal Vision / Mild Visual Fatigue)";
                 medTitle.className = "text-2xl md:text-3xl font-bold mb-2 text-green-300";
-                medDesc.innerHTML = "<strong>ผลประเมินทางการแพทย์:</strong> การแยกแยะสีอยู่ในเกณฑ์ปกติ แต่อาจมีภาวะสายตาล้า (Asthenopia) ชั่วขณะทำให้พลาดในเฉดสีที่ใกล้เคียงกันสุดๆ มักเกิดจากการใช้สมาธิจดจ่อกับหน้าจอหรือเอกสารต่อเนื่องเป็นเวลานาน";
+                medDesc.innerHTML = "<strong>ผลประเมินทางการแพทย์:</strong> การแยกแยะสีอยู่ในเกณฑ์ปกติ แต่อาจมีภาวะสายตาล้า (Asthenopia) ชั่วขณะทำให้พลาดในเฉดสีที่ใกล้เคียงกันสุดๆ หรืออาจจะตอบไม่ทันเวลา มักเกิดจากการใช้สมาธิจดจ่อกับหน้าจอหรือเอกสารต่อเนื่องเป็นเวลานาน";
                 additionalTips = `
                     <li>🎯 <strong>กฎ 20-20-20:</strong> เพื่อคลายการหดเกร็งของกล้ามเนื้อตา (Ciliary muscle) ควรพักสายตาทุก 20 นาที มองไกล 20 ฟุต นาน 20 วินาที เมื่อต้องทำงานหน้าจอหรืออ่านหนังสือเป็นเวลานาน</li>`;
             
-            } else if (score >= 6) { 
+            } else if (score >= 5) { 
                 medTitle.innerText = "⚠️ ภาวะตาล้าสะสม (Digital Eye Strain / Mild Deficiency)";
                 medTitle.className = "text-2xl md:text-3xl font-bold mb-2 text-yellow-400";
                 medDesc.innerHTML = "<strong>ผลประเมินทางการแพทย์:</strong> อาจมีความบกพร่องทางสีระดับอ่อน หรือเกิดจากภาวะตาล้าสะสม การจ้องจอมอนิเตอร์หรือสมาร์ทโฟนต่อเนื่องทำให้อัตราการกะพริบตาลดลง ส่งผลให้ชั้นน้ำตา (Tear film) ไม่คงที่และเกิดตาแห้ง";
@@ -446,7 +532,8 @@
                 link.click();
             } catch (err) {
                 console.error(err);
-                alert("เกิดข้อผิดพลาดในการบันทึกภาพ");
+                // แทนการใช้ alert ตรงๆ เพื่อให้ถูกต้องตามข้อบังคับ
+                console.warn("เกิดข้อผิดพลาดในการบันทึกภาพ");
             }
         }
     </script>
