@@ -85,7 +85,7 @@
                 </div>
             </div>
             <p class="text-gray-300 mb-6 max-w-md mx-auto text-xl md:text-2xl leading-relaxed">
-                ระบบจะสุ่มเฉดสี 10 ข้อ (คละความยาก) <br><span class="text-red-400 font-bold">⚠️ คุณมีเวลาจำกัดตามระดับความยาก (5 - 10 วินาที)!</span>
+                ระบบจะสุ่มเฉดสี 10 ข้อ (คละความยาก) <br><span class="text-red-400 font-bold">⚠️ คุณมีเวลาจำกัดข้อละ 7 วินาที!</span>
             </p>
             
             <div class="mb-6">
@@ -109,11 +109,16 @@
                 </div>
             </div>
 
-            <!-- Timer Bar -->
-            <div class="w-full bg-slate-800 rounded-full h-7 mb-6 relative overflow-hidden border border-slate-600 shadow-inner">
-                <div id="timer-bar" class="h-full w-full bg-emerald-400" style="width: 100%;"></div>
-                <div class="absolute inset-0 flex items-center justify-center text-2xl font-bold text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                    เหลือเวลา <span id="timer-text" class="mx-1">5</span> วินาที
+            <!-- Circular SVG Timer -->
+            <div class="flex justify-center items-center mb-6">
+                <div class="relative w-24 h-24">
+                    <svg class="w-full h-full transform -rotate-90 drop-shadow-lg" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#1e293b" stroke-width="8"></circle>
+                        <circle id="timer-ring" cx="50" cy="50" r="45" fill="none" stroke="#34d399" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="0" style="transition: stroke-dashoffset 1s linear, stroke 0.3s ease;"></circle>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span id="timer-text" class="text-5xl font-extrabold text-white leading-none mt-1">7</span>
+                    </div>
                 </div>
             </div>
 
@@ -243,7 +248,6 @@
         // Timer Setup
         let timerInterval;
         let timeLeft = 0;
-        let currentTimeLimit = 5;
 
         const startScreen = document.getElementById('start-screen');
         const gameScreen = document.getElementById('game-screen');
@@ -303,32 +307,40 @@
             loadLevel();
         }
 
-        function startTimer(limit) {
+        function startTimer() {
+            const limit = 7; // ฟิกซ์เวลาที่ 7 วินาทีทุกข้อ
             clearInterval(timerInterval);
             timeLeft = limit;
             
+            const timerRing = document.getElementById('timer-ring');
+            const circumference = 283; // 2 * PI * r (r=45)
+            
             // Reset visuals instantly
             timerText.innerText = timeLeft;
-            timerBar.style.transition = 'none';
-            timerBar.style.width = '100%';
-            timerBar.className = "h-full w-full bg-emerald-400"; // Reset to green
+            timerText.classList.remove('animate-pulse', 'text-red-400');
+            timerText.classList.add('text-white');
+            timerRing.style.transition = 'none';
+            timerRing.style.strokeDashoffset = '0';
+            timerRing.setAttribute('stroke', '#34d399'); // สีเขียวมรกต
             
             // Re-enable transition after a tiny delay to ensure reset is processed
             setTimeout(() => {
-                timerBar.style.transition = 'width 1s linear, background-color 0.3s ease';
+                timerRing.style.transition = 'stroke-dashoffset 1s linear, stroke 0.3s ease';
             }, 50);
 
             timerInterval = setInterval(() => {
                 timeLeft--;
                 timerText.innerText = timeLeft;
                 
-                // Update width
-                const percentage = (timeLeft / limit) * 100;
-                timerBar.style.width = `${percentage}%`;
+                // Update ring stroke
+                const percentage = ((limit - timeLeft) / limit) * circumference;
+                timerRing.style.strokeDashoffset = percentage;
                 
                 // Change color if time is low
                 if (timeLeft <= 2) {
-                    timerBar.className = "h-full w-full bg-red-500";
+                    timerRing.setAttribute('stroke', '#ef4444'); // สีแดง
+                    timerText.classList.add('animate-pulse', 'text-red-400');
+                    timerText.classList.remove('text-white');
                 }
                 
                 if (timeLeft <= 0) {
@@ -371,19 +383,16 @@
             colorNameDisplay.innerText = currentData.name;
             targetColorDisplay.style.backgroundColor = currentData.target;
             
-            // Set Difficulty Label Colors and Time Limit
+            // Set Difficulty Label Colors
             if(currentData.level === 'Easy') {
                 difficultyDisplay.innerText = "ง่าย";
                 difficultyDisplay.parentElement.className = "text-green-400 font-bold bg-green-900/40 px-4 py-1 rounded-full text-xl md:text-2xl";
-                currentTimeLimit = 5;
             } else if (currentData.level === 'Medium') {
                 difficultyDisplay.innerText = "ปานกลาง";
                 difficultyDisplay.parentElement.className = "text-yellow-400 font-bold bg-yellow-900/40 px-4 py-1 rounded-full text-xl md:text-2xl";
-                currentTimeLimit = 7;
             } else {
                 difficultyDisplay.innerText = "ยาก";
                 difficultyDisplay.parentElement.className = "text-red-400 font-bold bg-red-900/40 px-4 py-1 rounded-full text-xl md:text-2xl";
-                currentTimeLimit = 10;
             }
             
             optionsContainer.innerHTML = '';
@@ -403,8 +412,8 @@
                 optionsContainer.appendChild(btn);
             });
 
-            // Start the timer based on difficulty
-            startTimer(currentTimeLimit);
+            // Start the timer fixed at 7 seconds
+            startTimer();
         }
 
         function checkAnswer(selectedCode, targetCode, btnElement) {
