@@ -100,29 +100,24 @@
 
         <!-- Game Screen -->
         <div id="game-screen" class="hidden fade-in">
-            <!-- Header Row: Question # | Timer | Difficulty -->
-            <div class="flex justify-between items-center mb-8 relative mt-2 md:mt-0">
+            <!-- Header Row: Question # | Timer Bar | Difficulty -->
+            <div class="flex justify-between items-center mb-8 gap-2 md:gap-4 mt-2 md:mt-0">
                 
                 <!-- Question Number -->
-                <div class="text-cyan-400 font-bold bg-cyan-900/40 px-3 py-1 md:px-4 md:py-1 rounded-full text-xl md:text-2xl z-10">
+                <div class="text-cyan-400 font-bold bg-cyan-900/40 px-3 py-1 md:px-4 md:py-1 rounded-full text-xl md:text-2xl whitespace-nowrap">
                     ข้อที่ <span id="level-display">1</span>/10
                 </div>
 
-                <!-- Circular SVG Timer (Absolute Centered) -->
-                <div class="absolute inset-0 flex justify-center items-center pointer-events-none">
-                    <div class="relative w-20 h-20 md:w-24 md:h-24">
-                        <svg class="w-full h-full transform -rotate-90 drop-shadow-lg" viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="45" fill="none" stroke="#1e293b" stroke-width="8"></circle>
-                            <circle id="timer-ring" cx="50" cy="50" r="45" fill="none" stroke="#34d399" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="0" style="transition: stroke-dashoffset 1s linear, stroke 0.3s ease;"></circle>
-                        </svg>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center">
-                            <span id="timer-text" class="text-3xl md:text-5xl font-extrabold text-white leading-none mt-1">7</span>
-                        </div>
+                <!-- Linear Progress Timer (แถบยาวตรงกลาง) -->
+                <div class="flex-1 flex flex-col items-center justify-center">
+                    <span id="timer-text" class="text-3xl md:text-4xl font-extrabold text-white leading-none mb-2">7</span>
+                    <div class="w-full h-3 md:h-4 bg-slate-800 rounded-full overflow-hidden shadow-inner border border-slate-700">
+                        <div id="timer-bar" class="h-full bg-emerald-400 w-full" style="transition: width 1s linear, background-color 0.3s ease;"></div>
                     </div>
                 </div>
 
                 <!-- Difficulty -->
-                <div class="text-yellow-400 font-bold bg-yellow-900/40 px-3 py-1 md:px-4 md:py-1 rounded-full text-xl md:text-2xl z-10">
+                <div class="text-yellow-400 font-bold bg-yellow-900/40 px-3 py-1 md:px-4 md:py-1 rounded-full text-xl md:text-2xl whitespace-nowrap">
                     ระดับ: <span id="difficulty-display">ง่าย</span>
                 </div>
             </div>
@@ -317,33 +312,38 @@
             clearInterval(timerInterval);
             timeLeft = limit;
             
-            const timerRing = document.getElementById('timer-ring');
-            const circumference = 283; // 2 * PI * r (r=45)
+            const timerBar = document.getElementById('timer-bar');
             
             // Reset visuals instantly
             timerText.innerText = timeLeft;
             timerText.classList.remove('animate-pulse', 'text-red-400');
             timerText.classList.add('text-white');
-            timerRing.style.transition = 'none';
-            timerRing.style.strokeDashoffset = '0';
-            timerRing.setAttribute('stroke', '#34d399'); // สีเขียวมรกต
+            
+            timerBar.style.transition = 'none';
+            timerBar.style.width = '100%';
+            timerBar.className = 'h-full bg-emerald-400 w-full';
             
             // Re-enable transition after a tiny delay to ensure reset is processed
             setTimeout(() => {
-                timerRing.style.transition = 'stroke-dashoffset 1s linear, stroke 0.3s ease';
+                timerBar.style.transition = 'width 1s linear, background-color 0.3s ease';
+                timerBar.style.width = ((timeLeft - 1) / limit * 100) + '%';
             }, 50);
 
             timerInterval = setInterval(() => {
                 timeLeft--;
                 timerText.innerText = timeLeft;
                 
-                // Update ring stroke
-                const percentage = ((limit - timeLeft) / limit) * circumference;
-                timerRing.style.strokeDashoffset = percentage;
+                // Update bar width
+                if (timeLeft > 0) {
+                    timerBar.style.width = ((timeLeft - 1) / limit * 100) + '%';
+                } else {
+                    timerBar.style.width = '0%';
+                }
                 
                 // Change color if time is low
                 if (timeLeft <= 2) {
-                    timerRing.setAttribute('stroke', '#ef4444'); // สีแดง
+                    timerBar.classList.remove('bg-emerald-400');
+                    timerBar.classList.add('bg-red-500');
                     timerText.classList.add('animate-pulse', 'text-red-400');
                     timerText.classList.remove('text-white');
                 }
