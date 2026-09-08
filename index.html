@@ -100,30 +100,35 @@
 
         <!-- Game Screen -->
         <div id="game-screen" class="hidden fade-in">
-            <div class="flex justify-between items-center mb-4">
-                <div class="text-cyan-400 font-bold bg-cyan-900/40 px-4 py-1 rounded-full text-xl md:text-2xl">
-                    ข้อที่ <span id="level-display">1</span> / 10
+            <!-- Header Row: Question # | Timer | Difficulty -->
+            <div class="flex justify-between items-center mb-8 relative mt-2 md:mt-0">
+                
+                <!-- Question Number -->
+                <div class="text-cyan-400 font-bold bg-cyan-900/40 px-3 py-1 md:px-4 md:py-1 rounded-full text-xl md:text-2xl z-10">
+                    ข้อที่ <span id="level-display">1</span>/10
                 </div>
-                <div class="text-yellow-400 font-bold bg-yellow-900/40 px-4 py-1 rounded-full text-xl md:text-2xl">
+
+                <!-- Circular SVG Timer (Absolute Centered) -->
+                <div class="absolute inset-0 flex justify-center items-center pointer-events-none">
+                    <div class="relative w-20 h-20 md:w-24 md:h-24">
+                        <svg class="w-full h-full transform -rotate-90 drop-shadow-lg" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#1e293b" stroke-width="8"></circle>
+                            <circle id="timer-ring" cx="50" cy="50" r="45" fill="none" stroke="#34d399" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="0" style="transition: stroke-dashoffset 1s linear, stroke 0.3s ease;"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="timer-text" class="text-3xl md:text-5xl font-extrabold text-white leading-none mt-1">7</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Difficulty -->
+                <div class="text-yellow-400 font-bold bg-yellow-900/40 px-3 py-1 md:px-4 md:py-1 rounded-full text-xl md:text-2xl z-10">
                     ระดับ: <span id="difficulty-display">ง่าย</span>
                 </div>
             </div>
 
-            <!-- Circular SVG Timer -->
-            <div class="flex justify-center items-center mb-6">
-                <div class="relative w-24 h-24">
-                    <svg class="w-full h-full transform -rotate-90 drop-shadow-lg" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="45" fill="none" stroke="#1e293b" stroke-width="8"></circle>
-                        <circle id="timer-ring" cx="50" cy="50" r="45" fill="none" stroke="#34d399" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="0" style="transition: stroke-dashoffset 1s linear, stroke 0.3s ease;"></circle>
-                    </svg>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center">
-                        <span id="timer-text" class="text-5xl font-extrabold text-white leading-none mt-1">7</span>
-                    </div>
-                </div>
-            </div>
-
             <!-- Target Color Display -->
-            <div class="text-center mb-8">
+            <div class="text-center mb-8 mt-4">
                 <p class="text-gray-400 mb-3 text-xl tracking-widest uppercase" id="color-name">TARGET SHADE</p>
                 <div id="target-color" class="w-32 h-32 md:w-40 md:h-40 mx-auto rounded-full border-4 border-slate-700 shadow-2xl transition-all duration-300"></div>
             </div>
