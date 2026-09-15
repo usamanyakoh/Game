@@ -7,53 +7,43 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
+        /* นำเข้าฟอนต์ SaoChingcha-Bold */
         @font-face {
             font-family: 'SaoChingcha';
-            src: url('https://cdn.jsdelivr.net/gh/usamanyakoh/Project-Work@main/SaoChingcha-Bold.otf') format('opentype');
+            src: url('https://raw.githubusercontent.com/usamanyakoh/Project-Work/main/SaoChingcha-Bold.otf') format('opentype');
             font-weight: normal;
             font-style: normal;
-            font-display: swap;
         }
 
-        /* ใช้ฟอนต์เสาชิงช้า (SaoChingcha) ตามที่ขอมา */
         body {
-            font-family: 'SaoChingcha', 'Angsana New', sans-serif;
-            background-color: #0f172a;
+            font-family: 'SaoChingcha', sans-serif;
+            background-color: #0f172a; /* พื้นหลังสีกรมท่าเข้ม */
             color: #f8fafc;
-            overflow-x: hidden;
-            font-size: 1.15rem; /* ปรับให้พอดีมือถือ */
-            
-            /* Mobile Optimizations */
-            overscroll-behavior-y: contain; /* ป้องกันดึงจอเพื่อรีเฟรช */
-            user-select: none; /* ป้องกันคลุมดำข้อความเวลาแตะรัวๆ */
-            -webkit-user-select: none;
-            touch-action: pan-x pan-y;
+            overflow: hidden; /* ป้องกันการเลื่อนหน้าจอ (Scroll) บนมือถือ */
+            touch-action: manipulation; /* ป้องกันการซูมด้วยนิ้ว */
+            -webkit-user-select: none; /* ป้องกันการคลุมดำข้อความ */
+            user-select: none;
         }
-        @media (min-width: 768px) {
-            body { font-size: 1.25rem; }
-        }
+
         .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #1e253c; /* สีพื้นหลังกล่องตามต้นฉบับ */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
+
         .color-btn {
-            transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
-            /* Mobile Touch Optimizations */
-            touch-action: manipulation; /* ป้องกัน 300ms click delay บนมือถือ */
-            -webkit-tap-highlight-color: transparent; /* เอาไฮไลท์สี่เหลี่ยมเวลาแตะออก */
+            transition: transform 0.1s;
         }
         .color-btn:active {
             transform: scale(0.92);
         }
         .fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
+            animation: fadeIn 0.3s ease-out forwards;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
         }
-        /* Pop-up Animations */
         @keyframes popUp {
             0% { transform: scale(0.5); opacity: 0; }
             50% { transform: scale(1.1); opacity: 1; }
@@ -61,158 +51,142 @@
         }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-6px); }
-            50% { transform: translateX(6px); }
-            75% { transform: translateX(-6px); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
         }
-        .animate-popup {
-            animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        .animate-shake {
-            animation: shake 0.3s ease-in-out forwards;
-        }
-        #capture-card {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-            border-radius: 1.5rem;
-            padding: 1.25rem;
-            position: relative;
-            overflow: hidden;
-        }
-        /* Timer bar transition */
-        #timer-bar {
-            transition: width 1s linear, background-color 0.3s ease;
-        }
-        
-        /* ป้องกัน input ซูมหน้าจอใน iOS */
-        input[type="text"] {
-            font-size: 16px !important;
-        }
-        
-        /* เสริมให้พอดีหน้าจอโทรศัพท์ทุกรุ่น */
-        html, body {
-            height: 100%;
-            height: 100dvh; /* ใช้ dvh เพื่อหลบ Address bar ของมือถือแบบไดนามิก */
-            overflow: hidden;
-        }
-        /* แถบ scrollbar ในกรณีที่หน้าจอเล็กหรือตะแคงจอ แล้วต้องเลื่อนดูผลลัพธ์ */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #3b82f6; 
-            border-radius: 10px;
-        }
+        .animate-popup { animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .animate-shake { animation: shake 0.3s ease-in-out forwards; }
     </style>
 </head>
-<body class="w-full h-full flex flex-col items-center justify-center p-2 sm:p-4">
+<body class="w-screen h-[100dvh] flex flex-col items-center justify-center p-3 sm:p-4 bg-[#0d1326]">
 
-    <!-- Header -->
-    <header id="main-header" class="text-center mb-1 sm:mb-4 w-full max-w-2xl shrink-0 z-10 pt-2 transition-opacity duration-300">
-        <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-0.5 leading-tight">
-            COLOR VISION CHALLENGE
-        </h1>
-        <p class="text-sm sm:text-xl md:text-2xl text-blue-200">แบบทดสอบสายตา: แยกแยะความผิดปกติของเม็ดสี</p>
-    </header>
-
-    <!-- Main Container -->
-    <div class="w-full max-w-2xl glass-panel rounded-3xl p-3 sm:p-6 shadow-2xl relative flex flex-col justify-center flex-1 max-h-[85vh] sm:max-h-[80vh] overflow-y-auto">
+    <!-- Main Game Container (Fixed Full Height) -->
+    <div class="w-full h-full max-w-md glass-panel rounded-3xl relative flex flex-col overflow-hidden">
         
-        <!-- Start Screen -->
-        <div id="start-screen" class="text-center fade-in flex flex-col h-full justify-center">
-            <div class="mb-2 sm:mb-6 relative inline-block">
-                <div class="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-tr from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(6,182,212,0.5)]">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 sm:h-12 sm:w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                </div>
-            </div>
-            <p class="text-gray-300 mb-4 max-w-md mx-auto text-base sm:text-xl md:text-2xl leading-relaxed">
-                ระบบจะสุ่มเฉดสี 10 ข้อ (คละความยาก) <br><span class="text-red-400 font-bold">⚠️ คุณมีเวลาจำกัดข้อละ 5 วินาที!</span>
-            </p>
-            
-            <div class="mb-4 flex flex-col gap-2 max-w-sm mx-auto w-full">
-                <input type="text" id="fname" placeholder="ชื่อจริง..." class="w-full px-4 py-2 sm:py-3 rounded-full bg-slate-800 border-2 border-blue-500/50 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/50 transition-all text-center text-lg sm:text-xl font-bold">
-                <input type="text" id="lname" placeholder="นามสกุล..." class="w-full px-4 py-2 sm:py-3 rounded-full bg-slate-800 border-2 border-blue-500/50 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/50 transition-all text-center text-lg sm:text-xl font-bold">
-                <p id="name-error" class="text-red-400 mt-1 text-sm sm:text-lg hidden">กรุณากรอกชื่อและนามสกุลให้ครบ!</p>
+        <!-- ================= START SCREEN ================= -->
+        <div id="start-screen" class="flex flex-col h-full fade-in">
+            <!-- Header (อยู่ในกรอบ) -->
+            <div class="bg-[#151a2d] py-5 px-4 w-full border-b border-white/5 text-center shadow-lg">
+                <h1 class="text-3xl sm:text-4xl text-[#38bdf8] mb-1" style="text-shadow: 0 0 10px rgba(56,189,248,0.3);">
+                    COLOR VISION CHALLENGE
+                </h1>
+                <p class="text-sm sm:text-base text-gray-400">แบบทดสอบสายตา: แยกแยะความผิดปกติของเม็ดสี</p>
             </div>
 
-            <button onclick="startGame()" class="w-full max-w-sm mx-auto bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white font-bold py-2.5 sm:py-4 px-8 rounded-full text-xl sm:text-3xl transition-transform hover:scale-105 shadow-[0_0_20px_rgba(59,130,246,0.5)]">
-                เริ่มทดสอบสายตา
-            </button>
-        </div>
-
-        <!-- Game Screen -->
-        <div id="game-screen" class="hidden fade-in flex-col h-full w-full justify-between py-2 sm:py-4">
-            <!-- Header Row: Question # | Timer Bar | Difficulty -->
-            <div class="flex justify-between items-center mb-6">
-                
-                <!-- Question Number -->
-                <div class="text-cyan-400 font-bold bg-slate-800/80 border border-cyan-900/50 px-4 py-1.5 rounded-full text-base sm:text-lg whitespace-nowrap shadow-sm">
-                    ข้อที่ <span id="level-display">1</span>/10
-                </div>
-
-                <!-- Linear Progress Timer -->
-                <div class="flex flex-col items-center justify-center w-16 mx-2">
-                    <span id="timer-text" class="text-2xl sm:text-3xl font-bold text-white leading-none mb-1.5">5</span>
-                    <div class="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden">
-                        <div id="timer-bar" class="h-full bg-emerald-400 w-full" style="transition: width 1s linear, background-color 0.3s ease;"></div>
+            <!-- Content -->
+            <div class="flex-1 flex flex-col justify-center items-center p-5 space-y-6">
+                <!-- Glowing Eye Icon -->
+                <div class="relative flex justify-center items-center">
+                    <div class="w-20 h-20 bg-gradient-to-tr from-[#38bdf8] to-[#3b82f6] rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(56,189,248,0.6)]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
                     </div>
                 </div>
 
-                <!-- Difficulty -->
-                <div class="text-yellow-400 font-bold bg-slate-800/80 border border-yellow-900/50 px-4 py-1.5 rounded-full text-base sm:text-lg whitespace-nowrap shadow-sm">
+                <!-- Text Instruction -->
+                <div class="text-center">
+                    <p class="text-white text-lg sm:text-xl">ระบบจะสุ่มเฉดสี 10 ข้อ (คละความยาก)</p>
+                    <p class="text-red-400 text-lg sm:text-xl mt-1">⚠️ คุณมีเวลาจำกัดข้อละ 5 วินาที!</p>
+                </div>
+
+                <!-- Input Fields -->
+                <div class="w-full space-y-3 px-4">
+                    <input type="text" id="fname" placeholder="ชื่อจริง..." class="w-full px-5 py-3 rounded-full bg-[#171d2d] border border-slate-700 text-white placeholder-gray-500 focus:outline-none focus:border-[#38bdf8] text-center text-lg transition-colors">
+                    <input type="text" id="lname" placeholder="นามสกุล..." class="w-full px-5 py-3 rounded-full bg-[#171d2d] border border-slate-700 text-white placeholder-gray-500 focus:outline-none focus:border-[#38bdf8] text-center text-lg transition-colors">
+                    <p id="name-error" class="text-red-400 text-sm text-center hidden">กรุณากรอกชื่อและนามสกุลให้ครบ!</p>
+                </div>
+
+                <!-- Start Button -->
+                <div class="w-full px-4 pt-2">
+                    <button onclick="startGame()" class="w-full bg-gradient-to-r from-[#4f46e5] to-[#3b82f6] text-white py-3.5 rounded-full text-xl sm:text-2xl shadow-[0_0_20px_rgba(79,70,229,0.5)] active:scale-95 transition-transform">
+                        เริ่มทดสอบสายตา
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= GAME SCREEN ================= -->
+        <div id="game-screen" class="hidden flex-col h-full p-4 sm:p-5 fade-in">
+            
+            <!-- Top Status Bar -->
+            <div class="flex justify-between items-center w-full mb-6 mt-2">
+                <!-- Question Number (Pill) -->
+                <div class="bg-[#1e293b] text-[#38bdf8] px-4 py-1.5 rounded-full text-base sm:text-lg border border-slate-700/50 shadow-sm whitespace-nowrap">
+                    ข้อที่ <span id="level-display">1</span>/10
+                </div>
+
+                <!-- Timer -->
+                <div class="flex flex-col items-center justify-center mx-2 flex-1 max-w-[80px]">
+                    <span id="timer-text" class="text-2xl sm:text-3xl text-white leading-none mb-1">5</span>
+                    <div class="w-full h-1 bg-[#1e293b] rounded-full overflow-hidden">
+                        <div id="timer-bar" class="h-full bg-emerald-400 w-full" style="transition: width 1s linear;"></div>
+                    </div>
+                </div>
+
+                <!-- Difficulty (Pill) -->
+                <div id="difficulty-pill" class="bg-[#332a15] text-[#fbbf24] px-4 py-1.5 rounded-full text-base sm:text-lg border border-yellow-900/30 shadow-sm whitespace-nowrap">
                     ระดับ: <span id="difficulty-display">ง่าย</span>
                 </div>
             </div>
 
-            <!-- Target Color Display -->
-            <div class="text-center flex-1 flex flex-col items-center justify-center mb-4">
-                <p class="text-gray-300 mb-4 text-lg sm:text-xl tracking-widest font-bold uppercase" id="color-name">TARGET SHADE</p>
-                <div id="target-color" class="w-[22vh] h-[22vh] max-w-[160px] max-h-[160px] rounded-full border-[3px] border-slate-600 shadow-[0_0_20px_rgba(0,0,0,0.3)] transition-all duration-300"></div>
+            <!-- Central Display Area -->
+            <div class="flex-1 flex flex-col items-center justify-center mb-2">
+                <p class="text-gray-400 text-xl sm:text-2xl tracking-wide uppercase mb-4" id="color-name">COLOR NAME</p>
+                <!-- Target Color Circle -->
+                <div id="target-color" class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-[#2c3656] shadow-xl transition-colors duration-200"></div>
             </div>
 
-            <!-- Options (4 Colors - Always 2x2 Grid for easy comparison) -->
-            <div class="mt-auto pb-2">
-                <p class="text-center text-gray-400 mb-4 text-base sm:text-lg font-medium">เลือกสีที่ตรงกับเป้าหมายที่สุด</p>
-                <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-[42vh] mx-auto" id="options-container">
-                    <!-- Buttons will be generated here -->
+            <!-- Options (2x2 Grid) -->
+            <div class="w-full pb-4">
+                <p class="text-center text-gray-400 mb-3 text-lg sm:text-xl">เลือกสีที่ตรงกับเป้าหมายที่สุด</p>
+                <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full h-[35vh] max-h-[300px]" id="options-container">
+                    <!-- Buttons generated dynamically -->
                 </div>
             </div>
         </div>
 
-        <!-- Feedback Pop-up Overlay (Hidden by default) -->
-        <div id="feedback-popup" class="hidden absolute inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm rounded-3xl">
-            <div id="feedback-content" class="bg-slate-800 border-2 rounded-2xl p-4 sm:p-6 text-center shadow-2xl w-2/3 max-w-xs transform transition-all">
-                <div id="feedback-icon" class="text-4xl sm:text-5xl mb-2">🎉</div>
-                <h3 id="feedback-title" class="text-3xl sm:text-4xl font-bold mb-1"></h3>
+        <!-- ================= POPUP OVERLAY ================= -->
+        <div id="feedback-popup" class="hidden absolute inset-0 z-50 flex items-center justify-center bg-[#0d1326]/80 backdrop-blur-sm">
+            <div id="feedback-content" class="bg-[#1e253c] border-2 rounded-2xl p-6 text-center w-3/4 max-w-xs shadow-2xl">
+                <div id="feedback-icon" class="text-5xl mb-2">🎉</div>
+                <h3 id="feedback-title" class="text-3xl font-bold mb-1"></h3>
             </div>
         </div>
 
-        <!-- End Screen -->
-        <div id="end-screen" class="hidden text-center fade-in flex-col h-full justify-center">
-            <!-- Area to Capture -->
-            <div id="capture-card" class="mb-3 sm:mb-6 shadow-2xl border border-white/10 relative text-left">
-                <div class="absolute -top-10 -right-10 w-24 h-24 sm:w-40 sm:h-40 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        <!-- ================= END SCREEN ================= -->
+        <div id="end-screen" class="hidden flex-col h-full fade-in p-4 overflow-y-auto">
+            <!-- Result Card -->
+            <div id="capture-card" class="bg-[#151a2d] rounded-2xl shadow-2xl border border-white/5 p-5 relative overflow-hidden flex-1 flex flex-col justify-center min-h-min mb-4">
                 
-                <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold mb-1 text-white text-center">สรุปผลการทดสอบ</h2>
-                <h3 class="text-lg sm:text-2xl text-cyan-300 mb-2 sm:mb-4 text-center">คุณ <span id="display-player-name"></span></h3>
+                <h2 class="text-3xl sm:text-4xl text-center text-white mb-1">สรุปผลการทดสอบ</h2>
+                <h3 class="text-xl sm:text-2xl text-center text-[#38bdf8] mb-4">คุณ <span id="display-player-name"></span></h3>
                 
-                <div class="my-2 sm:my-4 text-center">
-                    <div class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 inline-block mb-1 leading-none">
-                        <span id="final-score">0</span><span class="text-3xl sm:text-5xl text-gray-400">/10</span>
+                <!-- Score -->
+                <div class="text-center mb-4">
+                    <div class="text-7xl sm:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-[#38bdf8] leading-none mb-2">
+                        <span id="final-score">0</span><span class="text-4xl text-gray-500">/10</span>
                     </div>
                 </div>
 
-                <!-- Advice and Prize Container -->
-                <div class="bg-slate-900/60 rounded-xl p-2.5 sm:p-4 md:p-5 border border-slate-700 relative z-10 text-left">
-                    <p class="text-base sm:text-xl md:text-2xl text-blue-300 font-bold mb-1">💡 คำแนะนำดูแลสายตา:</p>
-                    <p id="health-advice" class="text-sm sm:text-xl md:text-2xl text-gray-300 leading-snug sm:leading-relaxed mb-2 sm:mb-4"></p>
-                    
-                    <p class="text-base sm:text-xl md:text-2xl text-pink-400 font-bold mb-1">🎁 รางวัลที่ได้รับ:</p>
-                    <p id="prize-display" class="text-lg sm:text-2xl md:text-3xl font-bold text-white"></p>
+                <!-- Advice Block -->
+                <div class="bg-[#0f172a] rounded-xl p-4 border border-slate-700/50 text-left w-full space-y-3">
+                    <div>
+                        <p class="text-lg text-[#38bdf8] mb-1">💡 คำแนะนำ:</p>
+                        <p id="health-advice" class="text-base sm:text-lg text-gray-300 leading-snug"></p>
+                    </div>
+                    <div class="border-t border-slate-700 pt-3">
+                        <p class="text-lg text-pink-400 mb-1">🎁 รางวัลของคุณ:</p>
+                        <p id="prize-display" class="text-xl sm:text-2xl text-white"></p>
+                    </div>
                 </div>
             </div>
 
-            <div class="flex flex-col gap-2 max-w-xs mx-auto w-full">
-                <button onclick="saveToGallery()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold py-2.5 sm:py-3 px-6 rounded-full text-lg sm:text-2xl transition-transform hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2">
+            <!-- Save Button -->
+            <div class="w-full pb-2">
+                <button onclick="saveToGallery()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3.5 rounded-full text-xl sm:text-2xl shadow-[0_0_15px_rgba(16,185,129,0.4)] active:scale-95 transition-transform flex justify-center items-center gap-2">
                     📸 บันทึกหน้าจอ
                 </button>
             </div>
@@ -221,40 +195,34 @@
     </div>
 
     <script>
-        // 50 Colors Database
+        // Data structure matching 2x2 grid (4 options)
         const gameData = [
-            // --- EASY ---
-            { name: "แดง (Red)", target: "#E53935", options: ["#E53935", "#F44336", "#D32F2F", "#EF5350"], level: "Easy" },
-            { name: "น้ำเงิน (Blue)", target: "#1E88E5", options: ["#1E88E5", "#2196F3", "#1976D2", "#42A5F5"], level: "Easy" },
-            { name: "เขียว (Green)", target: "#43A047", options: ["#43A047", "#4CAF50", "#388E3C", "#66BB6A"], level: "Easy" },
-            { name: "เหลือง (Yellow)", target: "#FDD835", options: ["#FDD835", "#FFEB3B", "#FBC02D", "#FFEE58"], level: "Easy" },
-            { name: "ม่วง (Purple)", target: "#8E24AA", options: ["#8E24AA", "#9C27B0", "#7B1FA2", "#AB47BC"], level: "Easy" },
-            { name: "ส้ม (Orange)", target: "#FB8C00", options: ["#FB8C00", "#FF9800", "#F57C00", "#FFA726"], level: "Easy" },
-            { name: "ชมพู (Pink)", target: "#D81B60", options: ["#D81B60", "#E91E63", "#C2185B", "#EC407A"], level: "Easy" },
-            { name: "ฟ้า (Sky Blue)", target: "#039BE5", options: ["#039BE5", "#03A9F4", "#0288D1", "#29B6F6"], level: "Easy" },
+            // EASY (สีห่างกันมาก)
+            { name: "แดง (Red)", target: "#E53935", options: ["#E53935", "#FF8A80", "#880E4F", "#FF5252"], level: "Easy" },
+            { name: "น้ำเงิน (Blue)", target: "#1E88E5", options: ["#1E88E5", "#82B1FF", "#0D47A1", "#448AFF"], level: "Easy" },
+            { name: "เขียว (Green)", target: "#43A047", options: ["#43A047", "#B9F6CA", "#1B5E20", "#69F0AE"], level: "Easy" },
+            { name: "เหลือง (Yellow)", target: "#FDD835", options: ["#FDD835", "#FFF59D", "#F57F17", "#FFFF00"], level: "Easy" },
+            { name: "ม่วง (Purple)", target: "#8E24AA", options: ["#8E24AA", "#E1BEE7", "#4A148C", "#E040FB"], level: "Easy" },
+            
+            // MEDIUM (สีใกล้เคียงกัน)
+            { name: "กากี (Khaki)", target: "#D4E157", options: ["#D4E157", "#CDDC39", "#C0CA33", "#E6EE9C"], level: "Medium" },
+            { name: "แซลมอน (Salmon)", target: "#FF8A65", options: ["#FF8A65", "#FF7043", "#FFAB91", "#F4511E"], level: "Medium" },
+            { name: "เทอร์ควอยซ์ (Turquoise)", target: "#00BCD4", options: ["#00BCD4", "#26C6DA", "#00ACC1", "#4DD0E1"], level: "Medium" },
+            { name: "บานเย็น (Magenta)", target: "#E040FB", options: ["#E040FB", "#D500F9", "#EA80FC", "#AA00FF"], level: "Medium" },
+            { name: "ทอง (Gold)", target: "#FFCA28", options: ["#FFCA28", "#FFB300", "#FFD54F", "#FFC107"], level: "Medium" },
+            { name: "เงิน (Silver)", target: "#B0BEC5", options: ["#B0BEC5", "#90A4AE", "#CFD8DC", "#78909C"], level: "Medium" },
+            { name: "ช็อกโกแลต (Chocolate)", target: "#6D4C41", options: ["#6D4C41", "#5D4037", "#795548", "#8D6E63"], level: "Medium" },
+            { name: "หินชนวน (Slate)", target: "#78909C", options: ["#78909C", "#607D8B", "#90A4AE", "#546E7A"], level: "Medium" },
 
-            // --- MEDIUM ---
-            { name: "เขียวทะเล (Sea Green)", target: "#2E8B57", options: ["#2E8B57", "#389E66", "#247848", "#42B075"], level: "Medium" },
-            { name: "กรมท่า (Navy)", target: "#1A237E", options: ["#1A237E", "#253199", "#12185C", "#3240B8"], level: "Medium" },
-            { name: "เลือดหมู (Maroon)", target: "#800000", options: ["#800000", "#990000", "#660000", "#B30000"], level: "Medium" },
-            { name: "เทอร์ควอยซ์ (Turquoise)", target: "#00BCD4", options: ["#00BCD4", "#1AC6DE", "#009FAD", "#33D0E6"], level: "Medium" },
-            { name: "บานเย็น (Magenta)", target: "#E040FB", options: ["#E040FB", "#EA68FF", "#D018F0", "#F18FFF"], level: "Medium" },
-            { name: "กากี (Khaki)", target: "#D4E157", options: ["#D4E157", "#DEEB6C", "#C5D23F", "#E8F485"], level: "Medium" },
-            { name: "ทอง (Gold)", target: "#FFCA28", options: ["#FFCA28", "#FFD54F", "#FFB300", "#FFE082"], level: "Medium" },
-            { name: "พีช (Peach)", target: "#FFCCBC", options: ["#FFCCBC", "#FFAB91", "#FBE9E7", "#FF8A65"], level: "Medium" },
-            { name: "ช็อกโกแลต (Chocolate)", target: "#5D4037", options: ["#5D4037", "#725146", "#4A312A", "#856155"], level: "Medium" },
-            { name: "ฟ้าน้ำทะเล (Cyan)", target: "#00E5FF", options: ["#00E5FF", "#00B8D4", "#18FFFF", "#84FFFF"], level: "Medium" },
-
-            // --- HARD ---
-            { name: "แดงสด (Crimson)", target: "#DC143C", options: ["#DC143C", "#ED1B44", "#C80F33", "#F0244D"], level: "Hard" },
-            { name: "น้ำเงินเข้ม (Dark Blue)", target: "#00008B", options: ["#00008B", "#0000A3", "#000073", "#0000BA"], level: "Hard" },
-            { name: "เขียวป่า (Forest Green)", target: "#228B22", options: ["#228B22", "#2A9E2A", "#1C781C", "#30B030"], level: "Hard" },
-            { name: "เหลืองเลมอน (Lemon)", target: "#FFFACD", options: ["#FFFACD", "#FFF2A3", "#FFFFF2", "#FFEAA6"], level: "Hard" },
-            { name: "ส้มอิฐ (Brick)", target: "#B22222", options: ["#B22222", "#C72E2E", "#9C1717", "#DB3D3D"], level: "Hard" },
-            { name: "ชมพูบานเย็น (Deep Pink)", target: "#FF1493", options: ["#FF1493", "#FF2EA3", "#F00080", "#FF45AE"], level: "Hard" },
-            { name: "ฟ้าพาสเทล (Pastel Blue)", target: "#AEC6CF", options: ["#AEC6CF", "#9DB8C4", "#C0D6E0", "#8FAAB8"], level: "Hard" },
-            { name: "เขียวแอปเปิ้ล (Apple Green)", target: "#8DB600", options: ["#8DB600", "#9DC700", "#7AA100", "#ADD600"], level: "Hard" },
-            { name: "ชมพูกุหลาบ (Rose)", target: "#FF007F", options: ["#FF007F", "#FF1C8C", "#E30071", "#FF369D"], level: "Hard" }
+            // HARD (สีแทบจะเหมือนกัน)
+            { name: "แดงสด (Crimson)", target: "#DC143C", options: ["#DC143C", "#D11438", "#E61440", "#C81235"], level: "Hard" },
+            { name: "น้ำเงินเข้ม (Dark Blue)", target: "#00008B", options: ["#00008B", "#000095", "#000080", "#00009F"], level: "Hard" },
+            { name: "เขียวป่า (Forest Green)", target: "#228B22", options: ["#228B22", "#208220", "#249424", "#1E7D1E"], level: "Hard" },
+            { name: "เหลืองเลมอน (Lemon)", target: "#FFFACD", options: ["#FFFACD", "#FFFBD6", "#FFF8C2", "#FFFCE0"], level: "Hard" },
+            { name: "ม่วงออร์คิด (Orchid)", target: "#DA70D6", options: ["#DA70D6", "#D666D2", "#DF7ADC", "#D15CD0"], level: "Hard" },
+            { name: "ส้มอิฐ (Brick)", target: "#B22222", options: ["#B22222", "#AD2020", "#B82424", "#A81E1E"], level: "Hard" },
+            { name: "ชมพูบานเย็น (Deep Pink)", target: "#FF1493", options: ["#FF1493", "#F5128C", "#FF1998", "#EB1085"], level: "Hard" },
+            { name: "ฟ้าพาสเทล (Pastel Blue)", target: "#AEC6CF", options: ["#AEC6CF", "#A8BFC8", "#B5CDD6", "#A2B8C2"], level: "Hard" }
         ];
 
         let currentLevel = 0;
@@ -266,6 +234,7 @@
         let timerInterval;
         let timeLeft = 0;
 
+        // UI Elements
         const startScreen = document.getElementById('start-screen');
         const gameScreen = document.getElementById('game-screen');
         const endScreen = document.getElementById('end-screen');
@@ -273,6 +242,7 @@
         const targetColorDisplay = document.getElementById('target-color');
         const colorNameDisplay = document.getElementById('color-name');
         const levelDisplay = document.getElementById('level-display');
+        const difficultyPill = document.getElementById('difficulty-pill');
         const difficultyDisplay = document.getElementById('difficulty-display');
         
         const feedbackPopup = document.getElementById('feedback-popup');
@@ -284,11 +254,12 @@
         const timerText = document.getElementById('timer-text');
 
         function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+                [arr[i], arr[j]] = [arr[j], arr[i]];
             }
-            return array;
+            return arr;
         }
 
         function startGame() {
@@ -296,54 +267,47 @@
             const lname = document.getElementById('lname').value.trim();
             const nameError = document.getElementById('name-error');
             
-            // Validate inputs
             if (!fname || !lname) {
                 nameError.classList.remove('hidden');
-                if (!fname) document.getElementById('fname').focus();
-                else document.getElementById('lname').focus();
                 return;
             }
-            
-            // Hide keyboard on mobile by blurring inputs
-            document.getElementById('fname').blur();
-            document.getElementById('lname').blur();
-
             nameError.classList.add('hidden');
             playerName = `${fname} ${lname}`;
+            
             currentLevel = 0;
             score = 0;
             isWaitingForNext = false;
             
-            // สุ่มโจทย์: ง่าย 2, กลาง 4, ยาก 4 = 10 ข้อ
+            // สุ่ม 10 ข้อ: ง่าย 2, กลาง 4, ยาก 4
             const easyQs = shuffleArray(gameData.filter(q => q.level === 'Easy')).slice(0, 2);
             const medQs = shuffleArray(gameData.filter(q => q.level === 'Medium')).slice(0, 4);
             const hardQs = shuffleArray(gameData.filter(q => q.level === 'Hard')).slice(0, 4);
             
+            // นำมารวมและสุ่มลำดับอีกครั้ง
             currentQuestions = shuffleArray([...easyQs, ...medQs, ...hardQs]);
             
-            document.getElementById('main-header').classList.add('hidden');
             startScreen.classList.add('hidden');
+            startScreen.classList.remove('flex');
             gameScreen.classList.remove('hidden');
-            gameScreen.classList.add('flex'); // บังคับใช้ flex-layout เมื่อเริ่มเกม
+            gameScreen.classList.add('flex');
             
             loadLevel();
         }
 
         function startTimer() {
-            const limit = 5; // 5 วินาที
+            const limit = 5; // ล็อคเวลา 5 วินาที
             clearInterval(timerInterval);
             timeLeft = limit;
             
             timerText.innerText = timeLeft;
-            timerText.classList.remove('animate-pulse', 'text-red-400');
-            timerText.classList.add('text-white');
+            timerText.style.color = "white";
             
             timerBar.style.transition = 'none';
             timerBar.style.width = '100%';
             timerBar.className = 'h-full bg-emerald-400 w-full';
             
             setTimeout(() => {
-                timerBar.style.transition = 'width 1s linear, background-color 0.3s ease';
+                timerBar.style.transition = 'width 1s linear';
                 timerBar.style.width = ((timeLeft - 1) / limit * 100) + '%';
             }, 50);
 
@@ -360,36 +324,14 @@
                 if (timeLeft <= 2) {
                     timerBar.classList.remove('bg-emerald-400');
                     timerBar.classList.add('bg-red-500');
-                    timerText.classList.add('animate-pulse', 'text-red-400');
-                    timerText.classList.remove('text-white');
+                    timerText.style.color = "#f87171"; // red-400
                 }
                 
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    handleTimeOut();
+                    handleAnswer(false, true); // ผิดแบบหมดเวลา
                 }
             }, 1000);
-        }
-
-        function handleTimeOut() {
-            isWaitingForNext = true;
-            
-            feedbackContent.classList.remove('border-green-500', 'border-red-500', 'animate-popup', 'animate-shake');
-            
-            feedbackIcon.innerText = "⏳";
-            feedbackTitle.innerText = "ผิด! (หมดเวลา)";
-            feedbackTitle.className = "text-4xl sm:text-5xl font-bold mb-1 text-red-400";
-            feedbackContent.classList.add('border-red-500', 'animate-shake');
-            
-            feedbackPopup.classList.remove('hidden');
-
-            setTimeout(() => {
-                feedbackPopup.classList.add('hidden');
-                currentLevel++;
-                
-                if (currentLevel < 10) loadLevel();
-                else showEndScreen();
-            }, 700);
         }
 
         function loadLevel() {
@@ -400,15 +342,16 @@
             colorNameDisplay.innerText = currentData.name;
             targetColorDisplay.style.backgroundColor = currentData.target;
             
+            // Set Difficulty Style
             if(currentData.level === 'Easy') {
                 difficultyDisplay.innerText = "ง่าย";
-                difficultyDisplay.parentElement.className = "text-green-400 font-bold bg-slate-800/80 border border-green-900/50 px-4 py-1.5 rounded-full text-base sm:text-lg whitespace-nowrap shadow-sm";
+                difficultyPill.className = "bg-[#143322] text-[#4ade80] px-4 py-1.5 rounded-full text-base sm:text-lg border border-green-900/50 shadow-sm whitespace-nowrap";
             } else if (currentData.level === 'Medium') {
                 difficultyDisplay.innerText = "ปานกลาง";
-                difficultyDisplay.parentElement.className = "text-yellow-400 font-bold bg-slate-800/80 border border-yellow-900/50 px-4 py-1.5 rounded-full text-base sm:text-lg whitespace-nowrap shadow-sm";
+                difficultyPill.className = "bg-[#332a15] text-[#fbbf24] px-4 py-1.5 rounded-full text-base sm:text-lg border border-yellow-900/50 shadow-sm whitespace-nowrap";
             } else {
                 difficultyDisplay.innerText = "ยาก";
-                difficultyDisplay.parentElement.className = "text-red-400 font-bold bg-slate-800/80 border border-red-900/50 px-4 py-1.5 rounded-full text-base sm:text-lg whitespace-nowrap shadow-sm";
+                difficultyPill.className = "bg-[#381515] text-[#f87171] px-4 py-1.5 rounded-full text-base sm:text-lg border border-red-900/50 shadow-sm whitespace-nowrap";
             }
             
             optionsContainer.innerHTML = '';
@@ -416,15 +359,19 @@
             
             shuffledOptions.forEach((colorCode) => {
                 const btn = document.createElement('button');
-                // เอาขอบหนาๆ ออก และใส่เป็น shadow กับเส้นขอบบางๆ ให้เหมือนในรูปเป๊ะๆ
-                btn.className = `color-btn aspect-square w-full rounded-2xl cursor-pointer border border-black/10 shadow-md`;
+                // ใช้สีปุ่มไม่มีขอบหรือมีขอบจางๆ เพื่อความมินิมอลตามแบบ
+                btn.className = `color-btn w-full h-full rounded-2xl cursor-pointer shadow-md`;
                 btn.style.backgroundColor = colorCode;
                 
-                // Use standard onclick, touched devices will benefit from touch-action: manipulation in CSS
-                btn.onclick = () => {
+                // Touch events for instant response on mobile
+                const triggerAnswer = (e) => {
+                    e.preventDefault();
                     if (isWaitingForNext) return;
-                    checkAnswer(colorCode, currentData.target);
+                    handleAnswer(colorCode === currentData.target, false);
                 };
+                
+                btn.addEventListener('touchstart', triggerAnswer, {passive: false});
+                btn.addEventListener('mousedown', triggerAnswer);
                 
                 optionsContainer.appendChild(btn);
             });
@@ -432,23 +379,22 @@
             startTimer();
         }
 
-        function checkAnswer(selectedCode, targetCode) {
+        function handleAnswer(isCorrect, isTimeout) {
             clearInterval(timerInterval); 
             isWaitingForNext = true;
-            const isCorrect = selectedCode === targetCode;
             
-            feedbackContent.classList.remove('border-green-500', 'border-red-500', 'animate-popup', 'animate-shake');
+            feedbackContent.classList.remove('border-emerald-500', 'border-red-500', 'animate-popup', 'animate-shake');
             
             if (isCorrect) {
                 score++;
                 feedbackIcon.innerText = "✅";
                 feedbackTitle.innerText = "ถูกต้อง!";
-                feedbackTitle.className = "text-4xl sm:text-5xl font-bold mb-1 text-green-400";
-                feedbackContent.classList.add('border-green-500', 'animate-popup');
+                feedbackTitle.className = "text-3xl sm:text-4xl text-emerald-400";
+                feedbackContent.classList.add('border-emerald-500', 'animate-popup');
             } else {
                 feedbackIcon.innerText = "❌";
                 feedbackTitle.innerText = "ผิด!";
-                feedbackTitle.className = "text-4xl sm:text-5xl font-bold mb-1 text-red-400";
+                feedbackTitle.className = "text-3xl sm:text-4xl text-red-500";
                 feedbackContent.classList.add('border-red-500', 'animate-shake');
             }
 
@@ -458,9 +404,12 @@
                 feedbackPopup.classList.add('hidden');
                 currentLevel++;
                 
-                if (currentLevel < 10) loadLevel();
-                else showEndScreen();
-            }, 700);
+                if (currentLevel < 10) {
+                    loadLevel();
+                } else {
+                    showEndScreen();
+                }
+            }, 600); // ดีเลย์แสดงผลแปปนึงแล้วเปลี่ยนข้อ
         }
 
         function showEndScreen() {
@@ -469,48 +418,39 @@
             endScreen.classList.remove('hidden');
             endScreen.classList.add('flex');
             
-            // แสดง Header กลับมาตอนจบเกม (ถ้าต้องการ) 
-            document.getElementById('main-header').classList.remove('hidden');
-            
             document.getElementById('final-score').innerText = score;
             document.getElementById('display-player-name').innerText = playerName;
 
-            const healthAdvice = document.getElementById('health-advice');
+            const adviceDisplay = document.getElementById('health-advice');
             const prizeDisplay = document.getElementById('prize-display');
             
-            if (score <= 2) {
-                healthAdvice.innerText = "สายตาคุณดูเหนื่อยล้ามาก! ควรพักสายตาทุกๆ 20 นาที และมองไปที่ไกลๆ อย่างน้อย 20 ฟุต เป็นเวลา 20 วินาที (กฎ 20-20-20) รวมถึงพักผ่อนให้เพียงพอนะครับ";
-            } else if (score <= 4) {
-                healthAdvice.innerText = "สายตาเริ่มมีอาการล้า ควรปรับแสงสว่างหน้าจอให้เหมาะสม และพักสายตาเป็นระยะ ทานอาหารที่มีวิตามินเอช่วยบำรุงสายตา";
-            } else if (score <= 8) {
-                healthAdvice.innerText = "สายตาคุณอยู่ในเกณฑ์ดี! แนะนำให้รักษาสุขภาพสายตาด้วยการทานผักผลไม้หลากสี และสวมแว่นกรองแสงเมื่อจ้องหน้าจอนานๆ";
-            } else {
-                healthAdvice.innerText = "สายตาคุณยอดเยี่ยมและแข็งแรงมาก! รักษามาตรฐานนี้ไว้ พักผ่อนให้เพียงพอและป้องกันดวงตาจากแสงแดดจ้าเวลาออกกลางแจ้งครับ";
-            }
-
-            if (score <= 5) {
-                prizeDisplay.innerText = "🥚 ไข่นกกระทาต้ม 1 ฟอง";
-            } else if (score <= 8) {
-                prizeDisplay.innerText = "🥚 ไข่ไก่ต้ม 1 ฟอง";
-            } else {
+            // Logic คำแนะนำและของรางวัล
+            if (score >= 9) {
+                adviceDisplay.innerText = "สายตาดีเยี่ยม! เซลล์รับสีของคุณทำงานประสานกันได้สมบูรณ์แบบมาก พยายามรักษาสุขภาพตาแบบนี้ต่อไปครับ";
                 prizeDisplay.innerText = "🥚 ไข่ไก่ต้ม 1 ฟอง + 🥢 ไม้เกาหลัง";
+            } else if (score >= 5) {
+                adviceDisplay.innerText = "สายตาอยู่ในเกณฑ์ปกติ แต่อาจมีภาวะตาล้าจากการจ้องจอนานๆ ควรพักสายตาตามกฎ 20-20-20 นะครับ";
+                prizeDisplay.innerText = "🥚 ไข่ไก่ต้ม 1 ฟอง";
+            } else if (score >= 3) {
+                adviceDisplay.innerText = "ตาเริ่มล้าสะสม หรือมีความเสี่ยงเล็กน้อย ควรพักสายตา มองที่กว้างๆ หรือต้นไม้สีเขียวบ้างครับ";
+                prizeDisplay.innerText = "🥚 ไข่นกกระทาต้ม 1 ฟอง";
+            } else {
+                adviceDisplay.innerText = "มีความเสี่ยงความผิดปกติในการแยกแยะสี หรือตาล้าหนักมาก แนะนำให้หลีกเลี่ยงการใช้แสงจ้า และควรปรึกษาจักษุแพทย์เพื่อตรวจเพิ่มเติมครับ";
+                prizeDisplay.innerText = "🥚 ไข่นกกระทาต้ม 1 ฟอง";
             }
         }
 
         async function saveToGallery() {
             const captureArea = document.getElementById('capture-card');
-            const btn = document.querySelector('button[onclick="saveToGallery()"]');
             
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = "กำลังบันทึก...";
+            // เปลี่ยนสีพื้นหลังชั่วคราวตอนถ่ายรูปเพื่อให้ไม่มีขอบโปร่งใส
+            const originalBg = captureArea.style.backgroundColor;
+            captureArea.style.backgroundColor = "#151a2d";
             
             try {
-                // รอสักครู่เพื่อให้ UI เรนเดอร์คำว่า "กำลังบันทึก..." เสร็จ
-                await new Promise(resolve => setTimeout(resolve, 100));
-
                 const canvas = await html2canvas(captureArea, {
                     scale: 2, 
-                    backgroundColor: "#0f172a", 
+                    backgroundColor: "#0d1326", 
                     logging: false,
                     useCORS: true
                 });
@@ -518,13 +458,12 @@
                 const image = canvas.toDataURL("image/png");
                 const link = document.createElement('a');
                 link.href = image;
-                link.download = `ผลทดสอบสายตา_${playerName.replace(/\s+/g, '_')}.png`;
+                link.download = `ColorVision_${playerName.replace(/\s/g, '_')}.png`;
                 link.click();
             } catch (err) {
-                console.error(err);
-                console.warn("เกิดข้อผิดพลาดในการบันทึกภาพ");
+                console.error("Capture Failed:", err);
             } finally {
-                btn.innerHTML = originalHTML;
+                captureArea.style.backgroundColor = originalBg;
             }
         }
     </script>
