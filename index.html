@@ -87,78 +87,94 @@
         input[type="text"] {
             font-size: 16px !important;
         }
+        
+        /* เสริมให้พอดีหน้าจอโทรศัพท์ทุกรุ่น */
+        html, body {
+            height: 100%;
+            height: 100dvh; /* ใช้ dvh เพื่อหลบ Address bar ของมือถือแบบไดนามิก */
+            overflow: hidden;
+        }
+        /* แถบ scrollbar ในกรณีที่หน้าจอเล็กหรือตะแคงจอ แล้วต้องเลื่อนดูผลลัพธ์ */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6; 
+            border-radius: 10px;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-2 sm:p-4">
+<body class="w-full h-full flex flex-col items-center justify-center p-2 sm:p-4">
 
     <!-- Header -->
-    <header class="text-center mb-3 sm:mb-6 w-full max-w-2xl mt-2 sm:mt-4">
-        <h1 class="text-3xl sm:text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-1 leading-tight">
+    <header id="main-header" class="text-center mb-1 sm:mb-4 w-full max-w-2xl shrink-0 z-10 pt-2 transition-opacity duration-300">
+        <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-0.5 leading-tight">
             COLOR VISION CHALLENGE
         </h1>
-        <p class="text-xl sm:text-2xl md:text-3xl text-blue-200">แบบทดสอบสายตา: แยกแยะความผิดปกติของเม็ดสี</p>
+        <p class="text-sm sm:text-xl md:text-2xl text-blue-200">แบบทดสอบสายตา: แยกแยะความผิดปกติของเม็ดสี</p>
     </header>
 
     <!-- Main Container -->
-    <div class="w-full max-w-2xl glass-panel rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl relative">
+    <div class="w-full max-w-2xl glass-panel rounded-3xl p-3 sm:p-6 shadow-2xl relative flex flex-col justify-center flex-1 max-h-[85vh] sm:max-h-[80vh] overflow-y-auto">
         
         <!-- Start Screen -->
-        <div id="start-screen" class="text-center fade-in block">
-            <div class="mb-4 sm:mb-8 relative inline-block">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-tr from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(6,182,212,0.5)]">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-12 sm:w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+        <div id="start-screen" class="text-center fade-in flex flex-col h-full justify-center">
+            <div class="mb-2 sm:mb-6 relative inline-block">
+                <div class="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-tr from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(6,182,212,0.5)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 sm:h-12 sm:w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                 </div>
             </div>
-            <p class="text-gray-300 mb-6 max-w-md mx-auto text-lg sm:text-xl md:text-2xl leading-relaxed">
+            <p class="text-gray-300 mb-4 max-w-md mx-auto text-base sm:text-xl md:text-2xl leading-relaxed">
                 ระบบจะสุ่มเฉดสี 10 ข้อ (คละความยาก) <br><span class="text-red-400 font-bold">⚠️ คุณมีเวลาจำกัดข้อละ 5 วินาที!</span>
             </p>
             
-            <div class="mb-6 flex flex-col gap-3 max-w-sm mx-auto">
-                <input type="text" id="fname" placeholder="ชื่อจริง..." class="w-full px-5 py-3 rounded-full bg-slate-800 border-2 border-blue-500/50 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/50 transition-all text-center text-xl sm:text-2xl font-bold">
-                <input type="text" id="lname" placeholder="นามสกุล..." class="w-full px-5 py-3 rounded-full bg-slate-800 border-2 border-blue-500/50 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/50 transition-all text-center text-xl sm:text-2xl font-bold">
-                <p id="name-error" class="text-red-400 mt-1 text-lg sm:text-xl hidden">กรุณากรอกชื่อและนามสกุลให้ครบ!</p>
+            <div class="mb-4 flex flex-col gap-2 max-w-sm mx-auto w-full">
+                <input type="text" id="fname" placeholder="ชื่อจริง..." class="w-full px-4 py-2 sm:py-3 rounded-full bg-slate-800 border-2 border-blue-500/50 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/50 transition-all text-center text-lg sm:text-xl font-bold">
+                <input type="text" id="lname" placeholder="นามสกุล..." class="w-full px-4 py-2 sm:py-3 rounded-full bg-slate-800 border-2 border-blue-500/50 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/50 transition-all text-center text-lg sm:text-xl font-bold">
+                <p id="name-error" class="text-red-400 mt-1 text-sm sm:text-lg hidden">กรุณากรอกชื่อและนามสกุลให้ครบ!</p>
             </div>
 
-            <button onclick="startGame()" class="w-full max-w-sm bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white font-bold py-3 sm:py-4 px-8 rounded-full text-2xl sm:text-3xl transition-transform hover:scale-105 shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+            <button onclick="startGame()" class="w-full max-w-sm mx-auto bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white font-bold py-2.5 sm:py-4 px-8 rounded-full text-xl sm:text-3xl transition-transform hover:scale-105 shadow-[0_0_20px_rgba(59,130,246,0.5)]">
                 เริ่มทดสอบสายตา
             </button>
         </div>
 
         <!-- Game Screen -->
-        <div id="game-screen" class="hidden fade-in">
+        <div id="game-screen" class="hidden fade-in flex-col h-full w-full justify-between py-2 sm:py-4">
             <!-- Header Row: Question # | Timer Bar | Difficulty -->
-            <div class="flex justify-between items-center mb-4 sm:mb-8 gap-2">
+            <div class="flex justify-between items-center mb-6">
                 
                 <!-- Question Number -->
-                <div class="text-cyan-400 font-bold bg-cyan-900/40 px-2 sm:px-3 py-1 rounded-full text-lg sm:text-xl md:text-2xl whitespace-nowrap">
+                <div class="text-cyan-400 font-bold bg-slate-800/80 border border-cyan-900/50 px-4 py-1.5 rounded-full text-base sm:text-lg whitespace-nowrap shadow-sm">
                     ข้อที่ <span id="level-display">1</span>/10
                 </div>
 
                 <!-- Linear Progress Timer -->
-                <div class="flex-1 flex flex-col items-center justify-center mx-1 sm:mx-2">
-                    <span id="timer-text" class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white leading-none mb-1 sm:mb-2">5</span>
-                    <div class="w-full h-2 sm:h-3 md:h-4 bg-slate-800 rounded-full overflow-hidden shadow-inner border border-slate-700">
+                <div class="flex flex-col items-center justify-center w-16 mx-2">
+                    <span id="timer-text" class="text-2xl sm:text-3xl font-bold text-white leading-none mb-1.5">5</span>
+                    <div class="w-full h-1.5 bg-slate-700 rounded-full overflow-hidden">
                         <div id="timer-bar" class="h-full bg-emerald-400 w-full" style="transition: width 1s linear, background-color 0.3s ease;"></div>
                     </div>
                 </div>
 
                 <!-- Difficulty -->
-                <div class="text-yellow-400 font-bold bg-yellow-900/40 px-2 sm:px-3 py-1 rounded-full text-lg sm:text-xl md:text-2xl whitespace-nowrap">
+                <div class="text-yellow-400 font-bold bg-slate-800/80 border border-yellow-900/50 px-4 py-1.5 rounded-full text-base sm:text-lg whitespace-nowrap shadow-sm">
                     ระดับ: <span id="difficulty-display">ง่าย</span>
                 </div>
             </div>
 
             <!-- Target Color Display -->
-            <div class="text-center mb-4 sm:mb-8 mt-2">
-                <p class="text-gray-400 mb-2 sm:mb-3 text-lg sm:text-xl tracking-widest uppercase" id="color-name">TARGET SHADE</p>
-                <div id="target-color" class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 mx-auto rounded-full border-4 border-slate-700 shadow-2xl transition-all duration-300"></div>
+            <div class="text-center flex-1 flex flex-col items-center justify-center mb-4">
+                <p class="text-gray-300 mb-4 text-lg sm:text-xl tracking-widest font-bold uppercase" id="color-name">TARGET SHADE</p>
+                <div id="target-color" class="w-[22vh] h-[22vh] max-w-[160px] max-h-[160px] rounded-full border-[3px] border-slate-600 shadow-[0_0_20px_rgba(0,0,0,0.3)] transition-all duration-300"></div>
             </div>
 
             <!-- Options (4 Colors - Always 2x2 Grid for easy comparison) -->
-            <p class="text-center text-gray-400 mb-3 sm:mb-4 text-lg sm:text-xl">เลือกสีที่ตรงกับเป้าหมายที่สุด</p>
-            <!-- บังคับให้เป็น 2 คอลัมน์ (2x2) เสมอ เพื่อให้เล่นบนมือถือได้ง่ายที่สุด -->
-            <div class="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 max-w-sm mx-auto" id="options-container">
-                <!-- Buttons will be generated here -->
+            <div class="mt-auto pb-2">
+                <p class="text-center text-gray-400 mb-4 text-base sm:text-lg font-medium">เลือกสีที่ตรงกับเป้าหมายที่สุด</p>
+                <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-[42vh] mx-auto" id="options-container">
+                    <!-- Buttons will be generated here -->
+                </div>
             </div>
         </div>
 
@@ -171,32 +187,32 @@
         </div>
 
         <!-- End Screen -->
-        <div id="end-screen" class="hidden text-center fade-in">
+        <div id="end-screen" class="hidden text-center fade-in flex-col h-full justify-center">
             <!-- Area to Capture -->
-            <div id="capture-card" class="mb-4 sm:mb-6 shadow-2xl border border-white/10 relative text-left">
-                <div class="absolute -top-10 -right-10 w-32 h-32 sm:w-40 sm:h-40 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+            <div id="capture-card" class="mb-3 sm:mb-6 shadow-2xl border border-white/10 relative text-left">
+                <div class="absolute -top-10 -right-10 w-24 h-24 sm:w-40 sm:h-40 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
                 
-                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-1 text-white text-center">สรุปผลการทดสอบ</h2>
-                <h3 class="text-xl sm:text-2xl text-cyan-300 mb-3 sm:mb-4 text-center">คุณ <span id="display-player-name"></span></h3>
+                <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold mb-1 text-white text-center">สรุปผลการทดสอบ</h2>
+                <h3 class="text-lg sm:text-2xl text-cyan-300 mb-2 sm:mb-4 text-center">คุณ <span id="display-player-name"></span></h3>
                 
-                <div class="my-3 sm:my-4 text-center">
-                    <div class="text-6xl sm:text-7xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 inline-block mb-1 leading-none">
-                        <span id="final-score">0</span><span class="text-4xl sm:text-5xl text-gray-400">/10</span>
+                <div class="my-2 sm:my-4 text-center">
+                    <div class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 inline-block mb-1 leading-none">
+                        <span id="final-score">0</span><span class="text-3xl sm:text-5xl text-gray-400">/10</span>
                     </div>
                 </div>
 
                 <!-- Advice and Prize Container -->
-                <div class="bg-slate-900/60 rounded-xl p-3 sm:p-4 md:p-5 border border-slate-700 relative z-10 text-left">
-                    <p class="text-lg sm:text-xl md:text-2xl text-blue-300 font-bold mb-1">💡 คำแนะนำดูแลสายตา:</p>
-                    <p id="health-advice" class="text-lg sm:text-xl md:text-2xl text-gray-300 leading-snug sm:leading-relaxed mb-3 sm:mb-4"></p>
+                <div class="bg-slate-900/60 rounded-xl p-2.5 sm:p-4 md:p-5 border border-slate-700 relative z-10 text-left">
+                    <p class="text-base sm:text-xl md:text-2xl text-blue-300 font-bold mb-1">💡 คำแนะนำดูแลสายตา:</p>
+                    <p id="health-advice" class="text-sm sm:text-xl md:text-2xl text-gray-300 leading-snug sm:leading-relaxed mb-2 sm:mb-4"></p>
                     
-                    <p class="text-lg sm:text-xl md:text-2xl text-pink-400 font-bold mb-1">🎁 รางวัลที่ได้รับ:</p>
-                    <p id="prize-display" class="text-xl sm:text-2xl md:text-3xl font-bold text-white"></p>
+                    <p class="text-base sm:text-xl md:text-2xl text-pink-400 font-bold mb-1">🎁 รางวัลที่ได้รับ:</p>
+                    <p id="prize-display" class="text-lg sm:text-2xl md:text-3xl font-bold text-white"></p>
                 </div>
             </div>
 
-            <div class="flex flex-col gap-3 max-w-xs mx-auto">
-                <button onclick="saveToGallery()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold py-3 px-6 rounded-full text-xl sm:text-2xl transition-transform hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2">
+            <div class="flex flex-col gap-2 max-w-xs mx-auto w-full">
+                <button onclick="saveToGallery()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold py-2.5 sm:py-3 px-6 rounded-full text-lg sm:text-2xl transition-transform hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2">
                     📸 บันทึกหน้าจอ
                 </button>
             </div>
@@ -305,10 +321,10 @@
             
             currentQuestions = shuffleArray([...easyQs, ...medQs, ...hardQs]);
             
+            document.getElementById('main-header').classList.add('hidden');
             startScreen.classList.add('hidden');
-            startScreen.classList.remove('block');
             gameScreen.classList.remove('hidden');
-            gameScreen.classList.add('block');
+            gameScreen.classList.add('flex'); // บังคับใช้ flex-layout เมื่อเริ่มเกม
             
             loadLevel();
         }
@@ -386,13 +402,13 @@
             
             if(currentData.level === 'Easy') {
                 difficultyDisplay.innerText = "ง่าย";
-                difficultyDisplay.parentElement.className = "text-green-400 font-bold bg-green-900/40 px-3 py-1 rounded-full text-lg sm:text-xl";
+                difficultyDisplay.parentElement.className = "text-green-400 font-bold bg-slate-800/80 border border-green-900/50 px-4 py-1.5 rounded-full text-base sm:text-lg whitespace-nowrap shadow-sm";
             } else if (currentData.level === 'Medium') {
                 difficultyDisplay.innerText = "ปานกลาง";
-                difficultyDisplay.parentElement.className = "text-yellow-400 font-bold bg-yellow-900/40 px-3 py-1 rounded-full text-lg sm:text-xl";
+                difficultyDisplay.parentElement.className = "text-yellow-400 font-bold bg-slate-800/80 border border-yellow-900/50 px-4 py-1.5 rounded-full text-base sm:text-lg whitespace-nowrap shadow-sm";
             } else {
                 difficultyDisplay.innerText = "ยาก";
-                difficultyDisplay.parentElement.className = "text-red-400 font-bold bg-red-900/40 px-3 py-1 rounded-full text-lg sm:text-xl";
+                difficultyDisplay.parentElement.className = "text-red-400 font-bold bg-slate-800/80 border border-red-900/50 px-4 py-1.5 rounded-full text-base sm:text-lg whitespace-nowrap shadow-sm";
             }
             
             optionsContainer.innerHTML = '';
@@ -400,8 +416,8 @@
             
             shuffledOptions.forEach((colorCode) => {
                 const btn = document.createElement('button');
-                // aspect-square makes sure the button is always a perfect square on any screen size
-                btn.className = `color-btn aspect-square w-full rounded-2xl shadow-lg border-2 sm:border-4 border-slate-700 cursor-pointer`;
+                // เอาขอบหนาๆ ออก และใส่เป็น shadow กับเส้นขอบบางๆ ให้เหมือนในรูปเป๊ะๆ
+                btn.className = `color-btn aspect-square w-full rounded-2xl cursor-pointer border border-black/10 shadow-md`;
                 btn.style.backgroundColor = colorCode;
                 
                 // Use standard onclick, touched devices will benefit from touch-action: manipulation in CSS
@@ -449,9 +465,12 @@
 
         function showEndScreen() {
             gameScreen.classList.add('hidden');
-            gameScreen.classList.remove('block');
+            gameScreen.classList.remove('flex');
             endScreen.classList.remove('hidden');
-            endScreen.classList.add('block');
+            endScreen.classList.add('flex');
+            
+            // แสดง Header กลับมาตอนจบเกม (ถ้าต้องการ) 
+            document.getElementById('main-header').classList.remove('hidden');
             
             document.getElementById('final-score').innerText = score;
             document.getElementById('display-player-name').innerText = playerName;
