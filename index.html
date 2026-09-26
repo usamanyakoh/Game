@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Color Vision Challenge - เกมทดสอบสายตา</title>
+    <title>Vision & Memory Challenge - เกมทดสอบสายตาและความจำ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* นำเข้าฟอนต์ SaoChingcha-Bold */
         @font-face {
             font-family: 'SaoChingcha';
             src: url('https://raw.githubusercontent.com/usamanyakoh/Project-Work/main/SaoChingcha-Bold.otf') format('opentype');
@@ -17,24 +16,24 @@
 
         body {
             font-family: 'SaoChingcha', sans-serif;
-            background-color: #0f172a; /* พื้นหลังสีกรมท่าเข้ม */
+            background-color: #0f172a; 
             color: #f8fafc;
-            overflow: hidden; /* ป้องกันการเลื่อนหน้าจอ (Scroll) บนมือถือ */
-            touch-action: manipulation; /* ป้องกันการซูมด้วยนิ้ว */
-            -webkit-user-select: none; /* ป้องกันการคลุมดำข้อความ */
+            overflow: hidden; 
+            touch-action: manipulation; 
+            -webkit-user-select: none; 
             user-select: none;
         }
 
         .glass-panel {
-            background-color: #1e253c; /* สีพื้นหลังกล่องตามต้นฉบับ */
+            background-color: #1e253c; 
             border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        .color-btn {
+        .color-btn, .animal-btn {
             transition: transform 0.1s;
         }
-        .color-btn:active {
+        .color-btn:active, .animal-btn:active {
             transform: scale(0.92);
         }
         .fade-in {
@@ -61,88 +60,111 @@
 </head>
 <body class="w-screen h-[100dvh] flex flex-col items-center justify-center p-3 sm:p-4 bg-[#0d1326]">
 
-    <!-- Main Game Container (Fixed Full Height) -->
     <div class="w-full h-full max-w-md glass-panel rounded-3xl relative flex flex-col overflow-hidden">
         
         <!-- ================= START SCREEN ================= -->
         <div id="start-screen" class="flex flex-col h-full fade-in">
-            <!-- Header (อยู่ในกรอบ) -->
             <div class="bg-[#151a2d] py-5 px-4 w-full border-b border-white/5 text-center shadow-lg">
                 <h1 class="text-3xl sm:text-4xl text-[#38bdf8] mb-1" style="text-shadow: 0 0 10px rgba(56,189,248,0.3);">
-                    COLOR VISION CHALLENGE
+                    VISION & MEMORY
                 </h1>
-                <p class="text-sm sm:text-base text-gray-400">แบบทดสอบสายตา: แยกแยะความผิดปกติของเม็ดสี</p>
+                <p class="text-sm sm:text-base text-gray-400">แบบทดสอบสายตา และ ความจำ</p>
             </div>
 
-            <!-- Content -->
-            <div class="flex-1 flex flex-col justify-center items-center p-5 space-y-6">
-                <!-- Glowing Eye Icon -->
-                <div class="relative flex justify-center items-center">
-                    <div class="w-20 h-20 bg-gradient-to-tr from-[#38bdf8] to-[#3b82f6] rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(56,189,248,0.6)]">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
+            <div class="flex-1 flex flex-col justify-center items-center p-5 space-y-5">
+                <div class="relative flex justify-center items-center gap-4">
+                    <div class="w-16 h-16 bg-gradient-to-tr from-[#38bdf8] to-[#3b82f6] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(56,189,248,0.5)]">
+                        <span class="text-3xl">👁️</span>
+                    </div>
+                    <div class="w-16 h-16 bg-gradient-to-tr from-[#c084fc] to-[#9333ea] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(192,132,252,0.5)]">
+                        <span class="text-3xl">🧠</span>
                     </div>
                 </div>
 
-                <!-- Text Instruction -->
-                <div class="text-center">
-                    <p class="text-white text-lg sm:text-xl">ระบบจะสุ่มเฉดสี 10 ข้อ (คละความยาก)</p>
-                    <p class="text-red-400 text-lg sm:text-xl mt-1">⚠️ คุณมีเวลาจำกัดข้อละ 5 วินาที!</p>
+                <div class="text-center text-white text-base sm:text-lg">
+                    <p class="mb-1">👁️ <span class="text-[#38bdf8]">สายตา 10 ข้อ</span>: เลือกสีให้ตรงเป้าหมาย</p>
+                    <p>🧠 <span class="text-[#c084fc]">ความจำ 5 ข้อ</span>: จำสัตว์ 3 ตัวใน 3 วินาที</p>
+                    <p class="text-red-400 mt-3 text-lg">⚠️ ตอบคำถามภายใน 5 วินาที/ข้อ!</p>
                 </div>
 
-                <!-- Input Fields -->
-                <div class="w-full space-y-3 px-4">
+                <div class="w-full space-y-3 px-4 pt-2">
                     <input type="text" id="fname" placeholder="ชื่อจริง..." class="w-full px-5 py-3 rounded-full bg-[#171d2d] border border-slate-700 text-white placeholder-gray-500 focus:outline-none focus:border-[#38bdf8] text-center text-lg transition-colors">
                     <input type="text" id="lname" placeholder="นามสกุล..." class="w-full px-5 py-3 rounded-full bg-[#171d2d] border border-slate-700 text-white placeholder-gray-500 focus:outline-none focus:border-[#38bdf8] text-center text-lg transition-colors">
                     <p id="name-error" class="text-red-400 text-sm text-center hidden">กรุณากรอกชื่อและนามสกุลให้ครบ!</p>
                 </div>
 
-                <!-- Start Button -->
                 <div class="w-full px-4 pt-2">
                     <button onclick="startGame()" class="w-full bg-gradient-to-r from-[#4f46e5] to-[#3b82f6] text-white py-3.5 rounded-full text-xl sm:text-2xl shadow-[0_0_20px_rgba(79,70,229,0.5)] active:scale-95 transition-transform">
-                        เริ่มทดสอบสายตา
+                        เริ่มทดสอบ
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- ================= GAME SCREEN ================= -->
+        <!-- ================= GAME SCREEN (COLOR) ================= -->
         <div id="game-screen" class="hidden flex-col h-full p-4 sm:p-5 fade-in">
-            
-            <!-- Top Status Bar -->
             <div class="flex justify-between items-center w-full mb-6 mt-2">
-                <!-- Question Number (Pill) -->
                 <div class="bg-[#1e293b] text-[#38bdf8] px-4 py-1.5 rounded-full text-base sm:text-lg border border-slate-700/50 shadow-sm whitespace-nowrap">
-                    ข้อที่ <span id="level-display">1</span>/10
+                    สายตา <span id="level-display">1</span>/10
                 </div>
-
-                <!-- Timer -->
                 <div class="flex flex-col items-center justify-center mx-2 flex-1 max-w-[80px]">
                     <span id="timer-text" class="text-2xl sm:text-3xl text-white leading-none mb-1">5</span>
                     <div class="w-full h-1 bg-[#1e293b] rounded-full overflow-hidden">
                         <div id="timer-bar" class="h-full bg-emerald-400 w-full" style="transition: width 1s linear;"></div>
                     </div>
                 </div>
-
-                <!-- Difficulty (Pill) -->
                 <div id="difficulty-pill" class="bg-[#332a15] text-[#fbbf24] px-4 py-1.5 rounded-full text-base sm:text-lg border border-yellow-900/30 shadow-sm whitespace-nowrap">
                     ระดับ: <span id="difficulty-display">ง่าย</span>
                 </div>
             </div>
 
-            <!-- Central Display Area -->
             <div class="flex-1 flex flex-col items-center justify-center mb-2">
                 <p class="text-gray-400 text-xl sm:text-2xl tracking-wide uppercase mb-4" id="color-name">COLOR NAME</p>
-                <!-- Target Color Circle -->
                 <div id="target-color" class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-[#2c3656] shadow-xl transition-colors duration-200"></div>
             </div>
 
-            <!-- Options (2x2 Grid) -->
             <div class="w-full pb-4">
                 <p class="text-center text-gray-400 mb-3 text-lg sm:text-xl">เลือกสีที่ตรงกับเป้าหมายที่สุด</p>
-                <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full h-[35vh] max-h-[300px]" id="options-container">
+                <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full h-[35vh] max-h-[300px]" id="options-container"></div>
+            </div>
+        </div>
+
+        <!-- ================= TRANSITION SCREEN ================= -->
+        <div id="transition-screen" class="hidden flex-col items-center justify-center h-full p-4 fade-in text-center">
+            <div class="text-7xl mb-6">🧠</div>
+            <h2 class="text-3xl sm:text-4xl text-white mb-2">จบการทดสอบสายตา!</h2>
+            <p class="text-xl sm:text-2xl text-[#c084fc] animate-pulse">ต่อไป: แบบทดสอบความจำ (5 ข้อ)</p>
+            <p class="text-base text-gray-400 mt-4">(จำชุดภาพสัตว์ 3 ตัวที่เรียงกัน)</p>
+        </div>
+
+        <!-- ================= MEMORY SCREEN ================= -->
+        <div id="memory-screen" class="hidden flex-col h-full p-4 sm:p-5 fade-in">
+            <div class="flex justify-between items-center w-full mb-6 mt-2">
+                <div class="bg-[#1e293b] text-[#c084fc] px-4 py-1.5 rounded-full text-base sm:text-lg border border-slate-700/50 shadow-sm whitespace-nowrap">
+                    ความจำ <span id="mem-level-display">1</span>/5
+                </div>
+                <div class="flex flex-col items-center justify-center mx-2 flex-1 max-w-[80px]">
+                    <span id="mem-timer-text" class="text-2xl sm:text-3xl text-white leading-none mb-1">3</span>
+                    <div class="w-full h-1 bg-[#1e293b] rounded-full overflow-hidden">
+                        <div id="mem-timer-bar" class="h-full bg-purple-400 w-full" style="transition: width 1s linear;"></div>
+                    </div>
+                </div>
+                <div class="bg-[#1e293b] text-gray-300 px-4 py-1.5 rounded-full text-base sm:text-lg border border-slate-700/50 shadow-sm whitespace-nowrap">
+                    จำ 3 ภาพ
+                </div>
+            </div>
+
+            <!-- เพิ่มความกว้างให้พอสำหรับ 3 ตัว -->
+            <div class="flex-1 flex flex-col items-center justify-center mb-2">
+                <p class="text-gray-400 text-xl sm:text-2xl tracking-wide uppercase mb-4 transition-colors duration-300" id="mem-instruction">จำลำดับภาพสัตว์!</p>
+                <div id="mem-target" class="w-56 sm:w-72 h-28 sm:h-32 rounded-3xl bg-[#151a2d] border-4 border-[#2c3656] shadow-xl flex items-center justify-center text-4xl sm:text-5xl transition-all duration-300 tracking-[0.2em] px-2">
+                    🦆 🐓 🦉
+                </div>
+            </div>
+
+            <!-- แก้ไขเลย์เอาต์ที่ทำให้ปุ่มแบน ให้ความสูงกางออกเต็ม 35vh เหมือนด่านสี -->
+            <div class="w-full pb-4">
+                <div class="grid grid-cols-2 gap-3 sm:gap-4 w-full h-[35vh] max-h-[300px] hidden" id="mem-options-container">
                     <!-- Buttons generated dynamically -->
                 </div>
             </div>
@@ -158,23 +180,28 @@
 
         <!-- ================= END SCREEN ================= -->
         <div id="end-screen" class="hidden flex-col h-full fade-in p-4 overflow-y-auto">
-            <!-- Result Card -->
             <div id="capture-card" class="bg-[#151a2d] rounded-2xl shadow-2xl border border-white/5 p-5 relative overflow-hidden flex-1 flex flex-col justify-center min-h-min mb-4">
                 
-                <h2 class="text-3xl sm:text-4xl text-center text-white mb-1">สรุปผลการทดสอบ</h2>
-                <h3 class="text-xl sm:text-2xl text-center text-[#38bdf8] mb-4">คุณ <span id="display-player-name"></span></h3>
+                <h2 class="text-2xl sm:text-3xl text-center text-white mb-1">สรุปผลการทดสอบรวม</h2>
+                <h3 class="text-xl sm:text-2xl text-center text-[#38bdf8] mb-6">คุณ <span id="display-player-name"></span></h3>
                 
-                <!-- Score -->
+                <!-- Combined Score Base 20 -->
                 <div class="text-center mb-4">
-                    <div class="text-7xl sm:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-[#38bdf8] leading-none mb-2">
-                        <span id="final-score">0</span><span class="text-4xl text-gray-500">/10</span>
+                    <div class="text-7xl sm:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-[#38bdf8] leading-none mb-2 font-bold">
+                        <span id="final-total-score">0</span><span class="text-4xl sm:text-5xl text-gray-500">/20</span>
+                    </div>
+                    <div class="bg-[#1e293b] inline-block px-4 py-2 rounded-xl border border-slate-700/50 mt-2">
+                        <p class="text-gray-400 text-xs sm:text-sm text-left">
+                            👁️ สายตา 10 ข้อ (ข้อละ 1 คะแนน)<br>
+                            🧠 ความจำ 5 ข้อ (ข้อละ 2 คะแนน)<br>
+                            <span class="text-emerald-400">คะแนนเต็มรวม 20 คะแนน</span>
+                        </p>
                     </div>
                 </div>
 
-                <!-- Advice Block -->
                 <div class="bg-[#0f172a] rounded-xl p-4 border border-slate-700/50 text-left w-full space-y-3">
                     <div>
-                        <p class="text-lg text-[#38bdf8] mb-1">💡 คำแนะนำ:</p>
+                        <p class="text-lg text-[#38bdf8] mb-1">💡 ผลการประเมิน:</p>
                         <p id="health-advice" class="text-base sm:text-lg text-gray-300 leading-snug"></p>
                     </div>
                     <div class="border-t border-slate-700 pt-3">
@@ -184,10 +211,9 @@
                 </div>
             </div>
 
-            <!-- Save Button -->
             <div class="w-full pb-2">
                 <button onclick="saveToGallery()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3.5 rounded-full text-xl sm:text-2xl shadow-[0_0_15px_rgba(16,185,129,0.4)] active:scale-95 transition-transform flex justify-center items-center gap-2">
-                    📸 บันทึกหน้าจอ
+                    📸 บันทึกผลลัพธ์
                 </button>
             </div>
         </div>
@@ -195,63 +221,44 @@
     </div>
 
     <script>
-        // Data structure matching 2x2 grid (4 options)
-        const gameData = [
-            // EASY (สีห่างกันมาก)
+        // Data for Color Vision (10 Questions)
+        const colorData = [
             { name: "แดง (Red)", target: "#E53935", options: ["#E53935", "#FF8A80", "#880E4F", "#FF5252"], level: "Easy" },
             { name: "น้ำเงิน (Blue)", target: "#1E88E5", options: ["#1E88E5", "#82B1FF", "#0D47A1", "#448AFF"], level: "Easy" },
             { name: "เขียว (Green)", target: "#43A047", options: ["#43A047", "#B9F6CA", "#1B5E20", "#69F0AE"], level: "Easy" },
-            { name: "เหลือง (Yellow)", target: "#FDD835", options: ["#FDD835", "#FFF59D", "#F57F17", "#FFFF00"], level: "Easy" },
             { name: "ม่วง (Purple)", target: "#8E24AA", options: ["#8E24AA", "#E1BEE7", "#4A148C", "#E040FB"], level: "Easy" },
-            
-            // MEDIUM (สีใกล้เคียงกัน)
             { name: "กากี (Khaki)", target: "#D4E157", options: ["#D4E157", "#CDDC39", "#C0CA33", "#E6EE9C"], level: "Medium" },
-            { name: "แซลมอน (Salmon)", target: "#FF8A65", options: ["#FF8A65", "#FF7043", "#FFAB91", "#F4511E"], level: "Medium" },
             { name: "เทอร์ควอยซ์ (Turquoise)", target: "#00BCD4", options: ["#00BCD4", "#26C6DA", "#00ACC1", "#4DD0E1"], level: "Medium" },
-            { name: "บานเย็น (Magenta)", target: "#E040FB", options: ["#E040FB", "#D500F9", "#EA80FC", "#AA00FF"], level: "Medium" },
-            { name: "ทอง (Gold)", target: "#FFCA28", options: ["#FFCA28", "#FFB300", "#FFD54F", "#FFC107"], level: "Medium" },
-            { name: "เงิน (Silver)", target: "#B0BEC5", options: ["#B0BEC5", "#90A4AE", "#CFD8DC", "#78909C"], level: "Medium" },
             { name: "ช็อกโกแลต (Chocolate)", target: "#6D4C41", options: ["#6D4C41", "#5D4037", "#795548", "#8D6E63"], level: "Medium" },
             { name: "หินชนวน (Slate)", target: "#78909C", options: ["#78909C", "#607D8B", "#90A4AE", "#546E7A"], level: "Medium" },
-
-            // HARD (สีแทบจะเหมือนกัน)
             { name: "แดงสด (Crimson)", target: "#DC143C", options: ["#DC143C", "#D11438", "#E61440", "#C81235"], level: "Hard" },
             { name: "น้ำเงินเข้ม (Dark Blue)", target: "#00008B", options: ["#00008B", "#000095", "#000080", "#00009F"], level: "Hard" },
             { name: "เขียวป่า (Forest Green)", target: "#228B22", options: ["#228B22", "#208220", "#249424", "#1E7D1E"], level: "Hard" },
-            { name: "เหลืองเลมอน (Lemon)", target: "#FFFACD", options: ["#FFFACD", "#FFFBD6", "#FFF8C2", "#FFFCE0"], level: "Hard" },
-            { name: "ม่วงออร์คิด (Orchid)", target: "#DA70D6", options: ["#DA70D6", "#D666D2", "#DF7ADC", "#D15CD0"], level: "Hard" },
-            { name: "ส้มอิฐ (Brick)", target: "#B22222", options: ["#B22222", "#AD2020", "#B82424", "#A81E1E"], level: "Hard" },
-            { name: "ชมพูบานเย็น (Deep Pink)", target: "#FF1493", options: ["#FF1493", "#F5128C", "#FF1998", "#EB1085"], level: "Hard" },
             { name: "ฟ้าพาสเทล (Pastel Blue)", target: "#AEC6CF", options: ["#AEC6CF", "#A8BFC8", "#B5CDD6", "#A2B8C2"], level: "Hard" }
         ];
 
-        let currentLevel = 0;
-        let score = 0;
-        let isWaitingForNext = false;
-        let currentQuestions = [];
+        // Data for Memory Game (Animals)
+        const animalPool = ['🦅', '🐓', '🦆', '🕊️', '🦉', '🐧', '🦜', '🦚', '🦃', '🦇', '🦋', '🐝'];
+
         let playerName = "";
         
-        let timerInterval;
-        let timeLeft = 0;
+        // Color Game State
+        let currentColorLevel = 0;
+        let colorScore = 0; // Max 10
+        let colorQuestions = [];
+        let colorTimerInterval;
+        let isWaitingForNext = false;
 
-        // UI Elements
-        const startScreen = document.getElementById('start-screen');
-        const gameScreen = document.getElementById('game-screen');
-        const endScreen = document.getElementById('end-screen');
-        const optionsContainer = document.getElementById('options-container');
-        const targetColorDisplay = document.getElementById('target-color');
-        const colorNameDisplay = document.getElementById('color-name');
-        const levelDisplay = document.getElementById('level-display');
-        const difficultyPill = document.getElementById('difficulty-pill');
-        const difficultyDisplay = document.getElementById('difficulty-display');
-        
+        // Memory Game State
+        let currentMemoryLevel = 0;
+        let memoryScore = 0; // Max 5 (Will be multiplied by 2 later)
+        let memoryQuestions = [];
+        let memTimerInterval;
+
         const feedbackPopup = document.getElementById('feedback-popup');
         const feedbackContent = document.getElementById('feedback-content');
         const feedbackIcon = document.getElementById('feedback-icon');
         const feedbackTitle = document.getElementById('feedback-title');
-        
-        const timerBar = document.getElementById('timer-bar');
-        const timerText = document.getElementById('timer-text');
 
         function shuffleArray(array) {
             let arr = [...array];
@@ -262,6 +269,7 @@
             return arr;
         }
 
+        // ================= START GAME =================
         function startGame() {
             const fname = document.getElementById('fname').value.trim();
             const lname = document.getElementById('lname').value.trim();
@@ -274,31 +282,31 @@
             nameError.classList.add('hidden');
             playerName = `${fname} ${lname}`;
             
-            currentLevel = 0;
-            score = 0;
-            isWaitingForNext = false;
+            // Prepare Color Questions (2 Easy, 4 Medium, 4 Hard)
+            const easyQs = shuffleArray(colorData.filter(q => q.level === 'Easy')).slice(0, 2);
+            const medQs = shuffleArray(colorData.filter(q => q.level === 'Medium')).slice(0, 4);
+            const hardQs = shuffleArray(colorData.filter(q => q.level === 'Hard')).slice(0, 4);
+            colorQuestions = shuffleArray([...easyQs, ...medQs, ...hardQs]);
             
-            // สุ่ม 10 ข้อ: ง่าย 2, กลาง 4, ยาก 4
-            const easyQs = shuffleArray(gameData.filter(q => q.level === 'Easy')).slice(0, 2);
-            const medQs = shuffleArray(gameData.filter(q => q.level === 'Medium')).slice(0, 4);
-            const hardQs = shuffleArray(gameData.filter(q => q.level === 'Hard')).slice(0, 4);
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('flex');
+            document.getElementById('game-screen').classList.remove('hidden');
+            document.getElementById('game-screen').classList.add('flex');
             
-            // นำมารวมและสุ่มลำดับอีกครั้ง
-            currentQuestions = shuffleArray([...easyQs, ...medQs, ...hardQs]);
-            
-            startScreen.classList.add('hidden');
-            startScreen.classList.remove('flex');
-            gameScreen.classList.remove('hidden');
-            gameScreen.classList.add('flex');
-            
-            loadLevel();
+            currentColorLevel = 0;
+            colorScore = 0;
+            loadColorLevel();
         }
 
-        function startTimer() {
-            const limit = 5; // ล็อคเวลา 5 วินาที
-            clearInterval(timerInterval);
-            timeLeft = limit;
+        // ================= COLOR GAME LOGIC =================
+        function startColorTimer() {
+            const limit = 5; 
+            clearInterval(colorTimerInterval);
+            let timeLeft = limit;
             
+            const timerText = document.getElementById('timer-text');
+            const timerBar = document.getElementById('timer-bar');
+
             timerText.innerText = timeLeft;
             timerText.style.color = "white";
             
@@ -311,7 +319,7 @@
                 timerBar.style.width = ((timeLeft - 1) / limit * 100) + '%';
             }, 50);
 
-            timerInterval = setInterval(() => {
+            colorTimerInterval = setInterval(() => {
                 timeLeft--;
                 timerText.innerText = timeLeft;
                 
@@ -324,69 +332,253 @@
                 if (timeLeft <= 2) {
                     timerBar.classList.remove('bg-emerald-400');
                     timerBar.classList.add('bg-red-500');
-                    timerText.style.color = "#f87171"; // red-400
+                    timerText.style.color = "#f87171"; 
                 }
                 
                 if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    handleAnswer(false, true); // ผิดแบบหมดเวลา
+                    clearInterval(colorTimerInterval);
+                    handleColorAnswer(false);
                 }
             }, 1000);
         }
 
-        function loadLevel() {
+        function loadColorLevel() {
             isWaitingForNext = false;
-            const currentData = currentQuestions[currentLevel];
+            const currentData = colorQuestions[currentColorLevel];
             
-            levelDisplay.innerText = currentLevel + 1;
-            colorNameDisplay.innerText = currentData.name;
-            targetColorDisplay.style.backgroundColor = currentData.target;
+            document.getElementById('level-display').innerText = currentColorLevel + 1;
+            document.getElementById('color-name').innerText = currentData.name;
+            document.getElementById('target-color').style.backgroundColor = currentData.target;
             
-            // Set Difficulty Style
+            const diffDisplay = document.getElementById('difficulty-display');
+            const diffPill = document.getElementById('difficulty-pill');
+            
             if(currentData.level === 'Easy') {
-                difficultyDisplay.innerText = "ง่าย";
-                difficultyPill.className = "bg-[#143322] text-[#4ade80] px-4 py-1.5 rounded-full text-base sm:text-lg border border-green-900/50 shadow-sm whitespace-nowrap";
+                diffDisplay.innerText = "ง่าย";
+                diffPill.className = "bg-[#143322] text-[#4ade80] px-4 py-1.5 rounded-full text-base sm:text-lg border border-green-900/50 shadow-sm whitespace-nowrap";
             } else if (currentData.level === 'Medium') {
-                difficultyDisplay.innerText = "ปานกลาง";
-                difficultyPill.className = "bg-[#332a15] text-[#fbbf24] px-4 py-1.5 rounded-full text-base sm:text-lg border border-yellow-900/50 shadow-sm whitespace-nowrap";
+                diffDisplay.innerText = "ปานกลาง";
+                diffPill.className = "bg-[#332a15] text-[#fbbf24] px-4 py-1.5 rounded-full text-base sm:text-lg border border-yellow-900/50 shadow-sm whitespace-nowrap";
             } else {
-                difficultyDisplay.innerText = "ยาก";
-                difficultyPill.className = "bg-[#381515] text-[#f87171] px-4 py-1.5 rounded-full text-base sm:text-lg border border-red-900/50 shadow-sm whitespace-nowrap";
+                diffDisplay.innerText = "ยาก";
+                diffPill.className = "bg-[#381515] text-[#f87171] px-4 py-1.5 rounded-full text-base sm:text-lg border border-red-900/50 shadow-sm whitespace-nowrap";
             }
             
+            const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = '';
             const shuffledOptions = shuffleArray([...currentData.options]);
             
             shuffledOptions.forEach((colorCode) => {
                 const btn = document.createElement('button');
-                // ใช้สีปุ่มไม่มีขอบหรือมีขอบจางๆ เพื่อความมินิมอลตามแบบ
                 btn.className = `color-btn w-full h-full rounded-2xl cursor-pointer shadow-md`;
                 btn.style.backgroundColor = colorCode;
                 
-                // Touch events for instant response on mobile
                 const triggerAnswer = (e) => {
                     e.preventDefault();
                     if (isWaitingForNext) return;
-                    handleAnswer(colorCode === currentData.target, false);
+                    handleColorAnswer(colorCode === currentData.target);
                 };
-                
                 btn.addEventListener('touchstart', triggerAnswer, {passive: false});
                 btn.addEventListener('mousedown', triggerAnswer);
-                
                 optionsContainer.appendChild(btn);
             });
 
-            startTimer();
+            startColorTimer();
         }
 
-        function handleAnswer(isCorrect, isTimeout) {
-            clearInterval(timerInterval); 
+        function handleColorAnswer(isCorrect) {
+            clearInterval(colorTimerInterval); 
             isWaitingForNext = true;
             
+            // แก้ไขบั๊ก: ให้บวกคะแนนด่านสายตาทันทีถ้าตอบถูก
+            if (isCorrect) colorScore++; 
+            
+            showFeedback(isCorrect, () => {
+                currentColorLevel++;
+                if (currentColorLevel < 10) {
+                    loadColorLevel();
+                } else {
+                    showTransitionScreen();
+                }
+            });
+        }
+
+        // ================= MEMORY GAME LOGIC =================
+        function showTransitionScreen() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('flex');
+            
+            const transitionScreen = document.getElementById('transition-screen');
+            transitionScreen.classList.remove('hidden');
+            transitionScreen.classList.add('flex');
+
+            // Generate Memory Questions (5 Questions, each with 3 animals)
+            memoryQuestions = [];
+            for(let i = 0; i < 5; i++) {
+                let pool = shuffleArray(animalPool);
+                let targetSeq = pool.slice(0, 3); // 3 สัตว์ที่จะให้จำ
+                
+                let options = [targetSeq]; // เก็บเป็น array ของ array
+                
+                // สุ่มตัวลวง 3 ชุด ไม่ให้ซ้ำกัน
+                while(options.length < 4) {
+                    let distractorSeq = shuffleArray(animalPool).slice(0, 3);
+                    let distStr = distractorSeq.join('');
+                    
+                    // เช็คว่าตัวลวงนี้ซ้ำกับที่มีอยู่แล้วใน options หรือไม่
+                    let isDuplicate = options.some(opt => opt.join('') === distStr);
+                    if(!isDuplicate) {
+                        options.push(distractorSeq);
+                    }
+                }
+                
+                memoryQuestions.push({ 
+                    target: targetSeq, 
+                    options: shuffleArray(options) 
+                });
+            }
+
+            setTimeout(() => {
+                startMemoryGame();
+            }, 2500); // ดีเลย์ให้อ่านสักครู่ 2.5 วินาที
+        }
+
+        function startMemoryGame() {
+            document.getElementById('transition-screen').classList.add('hidden');
+            document.getElementById('transition-screen').classList.remove('flex');
+            
+            const memoryScreen = document.getElementById('memory-screen');
+            memoryScreen.classList.remove('hidden');
+            memoryScreen.classList.add('flex');
+            
+            currentMemoryLevel = 0;
+            memoryScore = 0;
+            loadMemoryLevel();
+        }
+
+        function startMemTimer(limit, colorClass, callback) {
+            clearInterval(memTimerInterval);
+            let timeLeft = limit;
+            
+            const timerText = document.getElementById('mem-timer-text');
+            const timerBar = document.getElementById('mem-timer-bar');
+
+            timerText.innerText = timeLeft;
+            timerText.style.color = "white";
+            
+            timerBar.style.transition = 'none';
+            timerBar.style.width = '100%';
+            timerBar.className = `h-full ${colorClass} w-full`;
+            
+            setTimeout(() => {
+                timerBar.style.transition = `width 1s linear`;
+                timerBar.style.width = ((timeLeft - 1) / limit * 100) + '%';
+            }, 50);
+
+            memTimerInterval = setInterval(() => {
+                timeLeft--;
+                timerText.innerText = timeLeft;
+                
+                if (timeLeft > 0) {
+                    timerBar.style.width = ((timeLeft - 1) / limit * 100) + '%';
+                } else {
+                    timerBar.style.width = '0%';
+                }
+                
+                if (timeLeft <= 2 && limit > 3) { 
+                    timerBar.classList.remove(colorClass);
+                    timerBar.classList.add('bg-red-500');
+                    timerText.style.color = "#f87171"; 
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(memTimerInterval);
+                    if(callback) callback();
+                }
+            }, 1000);
+        }
+
+        function loadMemoryLevel() {
+            isWaitingForNext = false;
+            const q = memoryQuestions[currentMemoryLevel];
+            
+            document.getElementById('mem-level-display').innerText = currentMemoryLevel + 1;
+            
+            // Phase 1: Memorize (3s)
+            const instruction = document.getElementById('mem-instruction');
+            const targetBox = document.getElementById('mem-target');
+            const optionsContainer = document.getElementById('mem-options-container');
+            
+            instruction.innerText = "จำลำดับภาพสัตว์ 3 ตัวนี้!";
+            instruction.classList.replace('text-emerald-400', 'text-gray-400');
+            
+            // แสดงสัตว์ 3 ตัว
+            targetBox.innerText = q.target.join(' ');
+            targetBox.classList.remove('scale-90', 'opacity-80', 'text-7xl');
+            optionsContainer.classList.add('hidden');
+            
+            // เริ่มนับ 3 วิให้จำ
+            startMemTimer(3, 'bg-purple-400', () => {
+                
+                // Phase 2: Answer (5s)
+                instruction.innerText = "ชุดสัตว์ข้อใดที่คุณเพิ่งเห็น?";
+                instruction.classList.replace('text-gray-400', 'text-emerald-400');
+                
+                // ปิดบังเป็นเครื่องหมายคำถาม
+                targetBox.innerText = "❓ ❓ ❓";
+                targetBox.classList.add('scale-90', 'opacity-80');
+                
+                optionsContainer.innerHTML = '';
+                optionsContainer.classList.remove('hidden');
+                
+                q.options.forEach((emojiSeq) => {
+                    const btn = document.createElement('button');
+                    // ขยายขนาดอีโมจิให้ใหญ่ขึ้นเป็น text-3xl และ sm:text-4xl
+                    btn.className = `animal-btn w-full h-full rounded-2xl cursor-pointer shadow-md bg-[#252f4a] border border-[#3b4b75] text-3xl sm:text-4xl flex items-center justify-center tracking-widest px-1`;
+                    btn.innerText = emojiSeq.join(' ');
+                    
+                    const triggerAnswer = (e) => {
+                        e.preventDefault();
+                        if (isWaitingForNext) return;
+                        // ตรวจสอบว่าสาย String ของทั้งคู่ตรงกันหรือไม่
+                        let isCorrect = (emojiSeq.join('') === q.target.join(''));
+                        handleMemoryAnswer(isCorrect);
+                    };
+                    btn.addEventListener('touchstart', triggerAnswer, {passive: false});
+                    btn.addEventListener('mousedown', triggerAnswer);
+                    optionsContainer.appendChild(btn);
+                });
+                
+                // เริ่มนับ 5 วิให้ตอบ
+                startMemTimer(5, 'bg-blue-400', () => {
+                    handleMemoryAnswer(false); // หมดเวลา
+                });
+            });
+        }
+
+        function handleMemoryAnswer(isCorrect) {
+            clearInterval(memTimerInterval); 
+            isWaitingForNext = true;
+            
+            // แก้ไขบั๊ก: ให้บวกคะแนนด่านความจำทันทีถ้าตอบถูก
+            if (isCorrect) memoryScore++; 
+            
+            showFeedback(isCorrect, () => {
+                currentMemoryLevel++;
+                if (currentMemoryLevel < 5) {
+                    loadMemoryLevel();
+                } else {
+                    showEndScreen();
+                }
+            });
+        }
+
+        // ================= GLOBAL FEEDBACK & END SCREEN =================
+        function showFeedback(isCorrect, callbackNext) {
             feedbackContent.classList.remove('border-emerald-500', 'border-red-500', 'animate-popup', 'animate-shake');
             
             if (isCorrect) {
-                score++;
+                // เอาเงื่อนไขการบวกคะแนนที่ผิดพลาดตรงนี้ออก เพื่อไปบวกที่ฟังก์ชันหลักแทน
                 feedbackIcon.innerText = "✅";
                 feedbackTitle.innerText = "ถูกต้อง!";
                 feedbackTitle.className = "text-3xl sm:text-4xl text-emerald-400";
@@ -399,51 +591,47 @@
             }
 
             feedbackPopup.classList.remove('hidden');
-
             setTimeout(() => {
                 feedbackPopup.classList.add('hidden');
-                currentLevel++;
-                
-                if (currentLevel < 10) {
-                    loadLevel();
-                } else {
-                    showEndScreen();
-                }
-            }, 600); // ดีเลย์แสดงผลแปปนึงแล้วเปลี่ยนข้อ
+                callbackNext();
+            }, 600);
         }
 
         function showEndScreen() {
-            gameScreen.classList.add('hidden');
-            gameScreen.classList.remove('flex');
+            document.getElementById('memory-screen').classList.add('hidden');
+            document.getElementById('memory-screen').classList.remove('flex');
+            
+            const endScreen = document.getElementById('end-screen');
             endScreen.classList.remove('hidden');
             endScreen.classList.add('flex');
             
-            document.getElementById('final-score').innerText = score;
+            // การคำนวณคะแนนตามโจทย์: สายตา 10, ความจำข้อละ 2 (เต็ม 10), รวม 20
+            const finalScore = colorScore + (memoryScore * 2);
+            
+            document.getElementById('final-total-score').innerText = finalScore;
             document.getElementById('display-player-name').innerText = playerName;
 
             const adviceDisplay = document.getElementById('health-advice');
             const prizeDisplay = document.getElementById('prize-display');
             
-            // Logic คำแนะนำและของรางวัล
-            if (score >= 9) {
-                adviceDisplay.innerText = "สายตาดีเยี่ยม! เซลล์รับสีของคุณทำงานประสานกันได้สมบูรณ์แบบมาก พยายามรักษาสุขภาพตาแบบนี้ต่อไปครับ";
-                prizeDisplay.innerText = "🥚 ไข่ไก่ต้ม 1 ฟอง + 🥢 ไม้เกาหลัง";
-            } else if (score >= 5) {
-                adviceDisplay.innerText = "สายตาอยู่ในเกณฑ์ปกติ แต่อาจมีภาวะตาล้าจากการจ้องจอนานๆ ควรพักสายตาตามกฎ 20-20-20 นะครับ";
-                prizeDisplay.innerText = "🥚 ไข่ไก่ต้ม 1 ฟอง";
-            } else if (score >= 3) {
-                adviceDisplay.innerText = "ตาเริ่มล้าสะสม หรือมีความเสี่ยงเล็กน้อย ควรพักสายตา มองที่กว้างๆ หรือต้นไม้สีเขียวบ้างครับ";
-                prizeDisplay.innerText = "🥚 ไข่นกกระทาต้ม 1 ฟอง";
+            // ปรับเกณฑ์การแจกของรางวัลใหม่ (คะแนนเต็ม 20)
+            if (finalScore >= 17) {
+                // 17 - 20 คะแนน
+                adviceDisplay.innerText = "สุดยอดมาก! ทั้งสายตาและความจำของคุณทำงานประสานกันได้อย่างยอดเยี่ยม เซลล์สมองและจอตาสมบูรณ์แบบ";
+                prizeDisplay.innerText = "🥚 ไข่ไก่ต้ม + 🎁 รางวัลพิเศษ";
+            } else if (finalScore >= 9) {
+                // 9 - 16 คะแนน
+                adviceDisplay.innerText = "ทำได้ดีครับ สายตาและความจำอยู่ในเกณฑ์มาตรฐาน อาจมีล้าบ้าง พักผ่อนให้เพียงพอนะครับ";
+                prizeDisplay.innerText = "🥚 ไข่ไก่ต้ม";
             } else {
-                adviceDisplay.innerText = "มีความเสี่ยงความผิดปกติในการแยกแยะสี หรือตาล้าหนักมาก แนะนำให้หลีกเลี่ยงการใช้แสงจ้า และควรปรึกษาจักษุแพทย์เพื่อตรวจเพิ่มเติมครับ";
-                prizeDisplay.innerText = "🥚 ไข่นกกระทาต้ม 1 ฟอง";
+                // 1 - 8 คะแนน (รวมถึง 0)
+                adviceDisplay.innerText = "คุณอาจจะกำลังเหนื่อยล้ามากๆ! ประสิทธิภาพการแยกสีและความจำลดลง ควรพักการใช้สายตาจ้องจอชั่วคราวครับ";
+                prizeDisplay.innerText = "🥚 ไข่นกกระทาต้ม";
             }
         }
 
         async function saveToGallery() {
             const captureArea = document.getElementById('capture-card');
-            
-            // เปลี่ยนสีพื้นหลังชั่วคราวตอนถ่ายรูปเพื่อให้ไม่มีขอบโปร่งใส
             const originalBg = captureArea.style.backgroundColor;
             captureArea.style.backgroundColor = "#151a2d";
             
@@ -458,7 +646,7 @@
                 const image = canvas.toDataURL("image/png");
                 const link = document.createElement('a');
                 link.href = image;
-                link.download = `ColorVision_${playerName.replace(/\s/g, '_')}.png`;
+                link.download = `VisionMemory_${playerName.replace(/\s/g, '_')}.png`;
                 link.click();
             } catch (err) {
                 console.error("Capture Failed:", err);
